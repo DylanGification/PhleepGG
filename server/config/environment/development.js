@@ -5,8 +5,8 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/phleep-dev'
+    uri: 'mongodb://admin:admin@ds145009.mlab.com:45009/phleepgg'
   },
 
-  seedDB: true
+  seedDB: false
 };

@@ -1,17 +1,390 @@
-<div ng-include="'components/shell/shell.html'"></div>
-
-<md-grid-list class="things-list" md-cols-sm="1" md-cols-md="2" md-cols-gt-md="5"
-        md-row-height-gt-md="1:1" md-row-height="4:3"
-        md-gutter="8px" md-gutter-gt-sm="4px">
-  <md-grid-tile ng-repeat="thing in awesomeThings" ng-class="getColor($index)" md-rowspan="{{getSpan($index)}}"
-                  md-colspan="{{getSpan($index)}}"
-                  md-colspan-sm="1">
-    
-    <md-button aria-label="Remove item" class="md-icon-button delete-btn" ng-click="deleteThing(thing)">
-      <md-icon style="fill: #fff" md-svg-icon="action:delete"></md-icon>
-    </md-button>
-    
-    <md-icon class="avatar-icon" md-svg-icon="avatar:svg-{{ ($index + 1) % 11 }}"></md-icon>
-    <md-grid-tile-footer><h3>{{thing.name}}</h3></md-grid-tile-footer>
-  </md-grid-tile>
-</md-grid-list>
+<div id="formWrapper">
+    <div class="row">
+        <div class="col-sm-6">
+            <div>
+                <label for="platforms"></label>
+                <select name="platforms" ng-model="data.myPlatformSelect" style="width:20%">
+                    <option value="pc">PC</option>
+                    <option value="xbl">XBL</option>
+                    <option value="psn">PSN</option>
+                </select>
+                <br>
+                <label for="regions"></label>
+                <select name="regions" ng-model="data.myRegionSelect" style="width:20%">
+                    <option value="eu">EU</option>
+                    <option value="us">US</option>
+                    <option value="kr">KR</option>
+                    <option value="any">ANY</option>
+                    <!-- <option value="global">GLOBAL</option> -->
+                </select>
+            </div>
+            <div>
+                <form ng-submit="getNewData()" class="input-group" style="padding-top: 10px;">
+                    <span class="glyphicon glyphicon-search search icon" ng-click="getMyData();"></span>
+                    <input type="text" ng-model="myUserInput" placeholder="Enter a Battletag, PSN ID or XBL Gamertag..." ng-submit="getMyData();" style="width: 90%">
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div>
+                <label for="platforms"></label>
+                <select name="platforms" ng-model="data.oppPlatformSelect" style="width:20%">
+                    <option value="pc">PC</option>
+                    <option value="xbl">XBL</option>
+                    <option value="psn">PSN</option>
+                </select>
+                <br>
+                <label for="regions"></label>
+                <select name="regions" ng-model="data.oppRegionSelect" style="width:20%">
+                    <option value="eu">EU</option>
+                    <option value="us">US</option>
+                    <option value="kr">KR</option>
+                    <option value="any">ANY</option>
+                    <!-- <option value="global">GLOBAL</option> -->
+                </select>
+            </div>
+            <div>
+                <form ng-submit="getOppData()" class="input-group" style="padding-top: 10px; width: 100%;">
+                    <span class="glyphicon glyphicon-search search icon" ng-click="getOppData();"></span>
+                    <input type="text" ng-model="oppUserInput" placeholder="Enter a Battletag, PSN ID or XBL Gamertag..." ng-submit="getOppData();" style="width: 90%">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-hide="">
+        <hr>
+        <div class="col-lg-5">
+            <h1>{{myUsername}}'s Stats</h1>
+            <div class="row profile well heroBackground" style="background-image: url({{myMostPlayedQP}});">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img ng-src="{{myAvatar}}" class="img-responsive img-rounded" style="position: relative; top: 8px;">
+                    </div>
+                    <div class="col-sm-3">
+                        <h2 class="userName">{{myUsername}}</h2>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="competitive-rank">
+                            <img ng-src="{{myRankIcon}}">
+                            <div class="u-align-center h6">{{myRank}}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 player-level" style="background-image: url({{myLevelFrame}});">
+                        <div class="u-vertical-center">{{myLevel}}</div>
+                        <div class="level-star">
+                            <img ng-src="{{myStar}}" class="level-star-img" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+        </div>
+        <div class="col-lg-5">
+            <h1>{{oppUsername}}'s Stats</h1>
+            <div class="row profile well heroBackground" style="background-image: url({{oppMostPlayedQP}});">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img ng-src="{{oppAvatar}}" class="img-responsive img-rounded" style="position: relative; top: 8px;">
+                    </div>
+                    <div class="col-sm-3">
+                        <h2 class="userName">{{oppUsername}}</h2>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="competitive-rank">
+                            <img ng-src="{{oppRankIcon}}">
+                            <div class="u-align-center h6">{{oppRank}}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 player-level" style="background-image: url({{oppLevelFrame}});">
+                        <div class="u-vertical-center">{{oppLevel}}</div>
+                        <div class="level-star">
+                            <img ng-src="{{oppStar}}" class="level-star-img" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td style="text-align: -webkit-center;" colspan="3">
+                        <h4>General</h4>
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <td width="20%">Quick Play Wins</td>
+                <td>{{myQPWins}}</td>
+                <td>{{oppQPWins}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Competitive Wins</td>
+                <td>{{myCompWins}}</td>
+                <td>{{oppCompWins}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Competitive Win Rate</td>
+                <td>{{myCompWinRate}}</td>
+                <td>{{oppCompWinRate}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Playtime: Quick Play</td>
+                <td>{{myQPPlaytime}}</td>
+                <td>{{oppQPPlaytime}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Playtime: Competitive Play</td>
+                <td>{{myCompPlaytime}}</td>
+                <td>{{oppCompPlaytime}}</td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td style="text-align: -webkit-center;" colspan="3">
+                        <h4>All Hero Stats - Quick Play</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: -webkit-center;" colspan="3">
+                        <h5>Overall</h5>
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <td width="20%">Melee Final Blows</td>
+                <td>{{myMeleeFinalBlowsQP}}</td>
+                <td>{{oppMeleeFinalBlowsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Solo Kills</td>
+                <td>{{mySoloKillsQP}}</td>
+                <td>{{oppSoloKillsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Objective Kills</td>
+                <td>{{myObjectiveKillsQP}}</td>
+                <td>{{oppObjectiveKillsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Final Blows</td>
+                <td>{{myFinalBlowsQP}}</td>
+                <td>{{oppFinalBlowsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Damage Done</td>
+                <td>{{myDamageDoneQP}}</td>
+                <td>{{oppDamageDoneQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Eliminations</td>
+                <td>{{myEliminationsQP}}</td>
+                <td>{{oppEliminationsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Environmental Kills</td>
+                <td>{{myEnvironmentalKillsQP}}</td>
+                <td>{{oppEnvironmentalKillsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Multikills</td>
+                <td>{{myMultikillsQP}}</td>
+                <td>{{oppMultikillsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Healing Done</td>
+                <td>{{myHealingDoneQP}}</td>
+                <td>{{oppHealingDoneQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Recon Assists</td>
+                <td>{{myReconAssistsQP}}</td>
+                <td>{{oppReconAssistsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Teleporter Pads Destroyed</td>
+                <td>{{myTeleporterPadsDestroyedQP}}</td>
+                <td>{{oppTeleporterPadsDestroyedQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Deaths</td>
+                <td>{{myDeathsQP}}</td>
+                <td>{{oppDeathsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Cards</td>
+                <td>{{myCardsQP}}</td>
+                <td>{{oppCardsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Medals</td>
+                <td>{{myMedalsQP}}</td>
+                <td>{{oppMedalsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Gold Medals</td>
+                <td>{{myGoldMedalsQP}}</td>
+                <td>{{oppGoldMedalsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Silver Medals</td>
+                <td>{{mySilverMedalsQP}}</td>
+                <td>{{oppSilverMedalsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Bronze Medals</td>
+                <td>{{myBronzeMedalsQP}}</td>
+                <td>{{oppBronzeMedalsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Time on Fire</td>
+                <td>{{myTimeOnFireQP}}</td>
+                <td>{{oppTimeOnFireQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Objective Time</td>
+                <td>{{myObjectiveTimeQP}}</td>
+                <td>{{oppObjectiveTimeQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Defensive Assists</td>
+                <td>{{myDefensiveAssistsQP}}</td>
+                <td>{{oppDefensiveAssistsQP}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Offensive Assists</td>
+                <td>{{myOffensiveAssistsQP}}</td>
+                <td>{{oppOffensiveAssistsQP}}</td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td style="text-align: -webkit-center;" colspan="3">
+                        <h4>All Hero Stats - Competitive Play</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: -webkit-center;" colspan="3">
+                        <h5>Overall</h5>
+                    </td>
+                </tr>
+            </thead>
+            <tr>
+                <td width="20%">Melee Final Blows</td>
+                <td>{{myMeleeFinalBlowsComp}}</td>
+                <td>{{oppMeleeFinalBlowsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Solo Kills</td>
+                <td>{{mySoloKillsComp}}</td>
+                <td>{{oppSoloKillsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Objective Kills</td>
+                <td>{{myObjectiveKillsComp}}</td>
+                <td>{{oppObjectiveKillsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Final Blows</td>
+                <td>{{myFinalBlowsComp}}</td>
+                <td>{{oppFinalBlowsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Damage Done</td>
+                <td>{{myDamageDoneComp}}</td>
+                <td>{{oppDamageDoneComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Eliminations</td>
+                <td>{{myEliminationsComp}}</td>
+                <td>{{oppEliminationsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Environmental Kills</td>
+                <td>{{myEnvironmentalKillsComp}}</td>
+                <td>{{oppEnvironmentalKillsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Multikills</td>
+                <td>{{myMultikillsComp}}</td>
+                <td>{{oppMultikillsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Healing Done</td>
+                <td>{{myHealingDoneComp}}</td>
+                <td>{{oppHealingDoneComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Recon Assists</td>
+                <td>{{myReconAssistsComp}}</td>
+                <td>{{oppReconAssistsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Teleporter Pads Destroyed</td>
+                <td>{{myTeleporterPadsDestroyedComp}}</td>
+                <td>{{oppTeleporterPadsDestroyedComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Deaths</td>
+                <td>{{myDeathsComp}}</td>
+                <td>{{oppDeathsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Cards</td>
+                <td>{{myCardsComp}}</td>
+                <td>{{oppCardsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Medals</td>
+                <td>{{myMedalsComp}}</td>
+                <td>{{oppMedalsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Gold Medals</td>
+                <td>{{myGoldMedalsComp}}</td>
+                <td>{{oppGoldMedalsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Silver Medals</td>
+                <td>{{mySilverMedalsComp}}</td>
+                <td>{{oppSilverMedalsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Bronze Medals</td>
+                <td>{{myBronzeMedalsComp}}</td>
+                <td>{{oppBronzeMedalsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Time on Fire</td>
+                <td>{{myTimeOnFireComp}}</td>
+                <td>{{oppTimeOnFireComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Objective Time</td>
+                <td>{{myObjectiveTimeComp}}</td>
+                <td>{{oppObjectiveTimeComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Defensive Assists</td>
+                <td>{{myDefensiveAssistsComp}}</td>
+                <td>{{oppDefensiveAssistsComp}}</td>
+            </tr>
+            <tr>
+                <td width="20%">Offensive Assists</td>
+                <td>{{myOffensiveAssistsComp}}</td>
+                <td>{{oppOffensiveAssistsComp}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
