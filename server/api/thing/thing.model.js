@@ -70,8 +70,8 @@ var ThingSchema = new Schema({
     },
     comp: {
         total: {
-        	rate: Number,
-        	games: Number,
+            rate: Number,
+            games: Number,
             wins: Number,
             loss: Number,
             objKills: Number,
@@ -126,9 +126,35 @@ var ThingSchema = new Schema({
             onFire: Number,
             objKills: Number
         }
+    },
+    heroes: {
+        playtime: {
+            ana: Number,
+            bastion: Number,
+            dva: Number,
+            genji: Number,
+            hanzo: Number,
+            junkrat: Number,
+            lucio: Number,
+            mccree: Number,
+            mei: Number,
+            mercy: Number,
+            orisa: Number,
+            pharah: Number,
+            reaper: Number,
+            reinhardt: Number,
+            roadhog: Number,
+            soldier76: Number,
+            sombra: Number,
+            symmetra: Number,
+            torbjorn: Number,
+            tracer: Number,
+            widowmaker: Number,
+            winston: Number,
+            zarya: Number,
+            zenyatta: Number,
+        }
     }
-    // info: String,
-    // active: Boolean
 });
 
 module.exports = mongoose.model('Thing', ThingSchema);

@@ -1,54 +1,52 @@
 <div id="formWrapper">
-    <div class="row">
-        <div class="col-sm-6">
-            <div>
-                <label for="platforms"></label>
-                <select name="platforms" ng-model="data.myPlatformSelect" style="width:20%">
-                    <option value="pc">PC</option>
-                    <option value="xbl">XBL</option>
-                    <option value="psn">PSN</option>
-                </select>
+    <div layout="row" layout-xs="column">
+        <div flex>
+            <form ng-submit="getNewData();">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Platform</label>
+                    <md-select ng-model="data.myPlatformSelect">
+                        <md-option ng-repeat="platform in platforms" value="{{platform.abbrev}}">
+                            {{platform.abbrev}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
                 <br>
-                <label for="regions"></label>
-                <select name="regions" ng-model="data.myRegionSelect" style="width:20%">
-                    <option value="eu">EU</option>
-                    <option value="us">US</option>
-                    <option value="kr">KR</option>
-                    <option value="any">ANY</option>
-                    <!-- <option value="global">GLOBAL</option> -->
-                </select>
-            </div>
-            <div>
-                <form ng-submit="getNewData()" class="input-group" style="padding-top: 10px;">
-                    <span class="glyphicon glyphicon-search search icon" ng-click="getMyData();"></span>
-                    <input type="text" ng-model="myUserInput" placeholder="Enter a Battletag, PSN ID or XBL Gamertag..." ng-submit="getMyData();" style="width: 90%">
-                </form>
-            </div>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Region</label>
+                    <md-select ng-model="data.myRegionSelect">
+                        <md-option ng-repeat="region in regions" value="{{region.abbrev}}">
+                            {{region.abbrev}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
+                    <input type="text" ng-model="myUserInput">
+                </md-input-container>
+            </form>
         </div>
-        <div class="col-sm-6">
-            <div>
-                <label for="platforms"></label>
-                <select name="platforms" ng-model="data.oppPlatformSelect" style="width:20%">
-                    <option value="pc">PC</option>
-                    <option value="xbl">XBL</option>
-                    <option value="psn">PSN</option>
-                </select>
-                <br>
-                <label for="regions"></label>
-                <select name="regions" ng-model="data.oppRegionSelect" style="width:20%">
-                    <option value="eu">EU</option>
-                    <option value="us">US</option>
-                    <option value="kr">KR</option>
-                    <option value="any">ANY</option>
-                    <!-- <option value="global">GLOBAL</option> -->
-                </select>
-            </div>
-            <div>
-                <form ng-submit="getOppData()" class="input-group" style="padding-top: 10px; width: 100%;">
-                    <span class="glyphicon glyphicon-search search icon" ng-click="getOppData();"></span>
-                    <input type="text" ng-model="oppUserInput" placeholder="Enter a Battletag, PSN ID or XBL Gamertag..." ng-submit="getOppData();" style="width: 90%">
-                </form>
-            </div>
+        <div flex>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Platform</label>
+                <md-select ng-model="data.oppPlatformSelect">
+                    <md-option ng-repeat="platform in platforms" value="{{platform.abbrev}}">
+                        {{platform.abbrev}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <br>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Region</label>
+                <md-select ng-model="data.oppRegionSelect">
+                    <md-option ng-repeat="region in regions" value="{{region.abbrev}}">
+                        {{region.abbrev}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
+                <input type="text" ng-model="oppUserInput" ng-submit="getOppData();">
+            </md-input-container>
         </div>
     </div>
     <div class="row" ng-hide="">

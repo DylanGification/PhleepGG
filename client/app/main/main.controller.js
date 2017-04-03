@@ -1,8 +1,6 @@
 'use strict';
-
 angular.module('phleepApp')
     .controller('MainCtrl', function($scope, $http, socket) {
-        $scope.awesomeThings = [];
 
         $http.get('/api/things').success(function(awesomeThings) {
             $scope.awesomeThings = awesomeThings;
@@ -18,7 +16,7 @@ angular.module('phleepApp')
         });
 
 
-        var apiURL = "http://ec2-34-249-139-204.eu-west-1.compute.amazonaws.com:4444/api/v3/u/";
+        var apiURL = "http://ec2-34-252-173-0.eu-west-1.compute.amazonaws.com:4444/api/v3/u/";
         // var apiURL = "https://owapi.net/api/v3/u/"
 
         $scope.data = {
@@ -30,6 +28,14 @@ angular.module('phleepApp')
             oppHeroSelect: "ana"
         };
 
+        $scope.platforms = ('pc psn xbl').split(' ').map(function(platform) {
+            return { abbrev: platform };
+        });
+
+        $scope.regions = ('eu us kr any').split(' ').map(function(region) {
+            return { abbrev: region };
+        });
+
         //My details
         var myDetails = [];
         var allMyHeroesQP = [];
@@ -39,6 +45,7 @@ angular.module('phleepApp')
         var myPlayedHeroesQP = [];
         var myPlayedHeroesComp = [];
         var myAchievements = [];
+        $scope.myUserInput = "";
 
         //Opponent details
         var oppDetails = [];
@@ -54,180 +61,245 @@ angular.module('phleepApp')
         var oppCall = false;
         var comparison = false;
         $scope.comparison = comparison;
+        var num = 651;
 
         //---------------------------------------------------------------------------------------------------------------------------
         //MY DETAILS
 
+        function clicked() {
+            console.log("FUCKIGN CLICKED");
+        }
+
         $scope.getNewData = function() {
-            var myUserInput = $scope.myUserInput;
-            var myUserName = myUserInput.replace("#", "-");
-            var myRegion = $scope.data.myRegionSelect;
-            var myPlatform = $scope.data.myPlatformSelect;
+            console.log("initial num " + num);
             $http({
                 method: 'GET',
-                url: apiURL + myUserName + "/blob" + "?platform=" + myPlatform,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                url: "http://127.0.0.1:8080/pc_t3.json",
+                type: 'json'
             }).then(function successCallback(response) {
-                myDetails = response.data;
-                getMyDetails(myDetails, myUserName);
-                console.log(myDetails);
-                $http.post('/api/things', {
-                    name: myUserName,
-                    level: myDetails[myRegion].stats.quickplay.overall_stats.level,
-                    prestige: myDetails[myRegion].stats.competitive.overall_stats.prestige,
-                    rank: myDetails[myRegion].stats.competitive.overall_stats.comprank,
-                    avatar: myDetails[myRegion].stats.competitive.overall_stats.avatar,
-                    qp: {
-                        total: {
-                            objKills: myDetails[myRegion].stats.quickplay.game_stats.objective_kills,
-                            rate: myDetails[myRegion].stats.quickplay.overall_stats.win_rate,
-                            games: myDetails[myRegion].stats.quickplay.overall_stats.games,
-                            wins: myDetails[myRegion].stats.quickplay.overall_stats.wins,
-                            loss: myDetails[myRegion].stats.quickplay.overall_stats.losses,
-                            healing: myDetails[myRegion].stats.quickplay.game_stats.healing_done,
-                            offAssists: myDetails[myRegion].stats.quickplay.game_stats.offensive_assists,
-                            defAssists: myDetails[myRegion].stats.quickplay.game_stats.defensive_assists,
-                            recAssists: myDetails[myRegion].stats.quickplay.game_stats.recon_assists,
-                            teleDestroyed: myDetails[myRegion].stats.quickplay.game_stats.teleporter_pads_destroyed,
-                            objTime: myDetails[myRegion].stats.quickplay.game_stats.objective_time,
-                            melee: myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows,
-                            medals: myDetails[myRegion].stats.quickplay.game_stats.medals,
-                            cards: myDetails[myRegion].stats.quickplay.game_stats.cards,
-                            multikillBest: myDetails[myRegion].stats.quickplay.game_stats.multikill_best,
-                            multikills: myDetails[myRegion].stats.quickplay.game_stats.multikills,
-                            damageDone: myDetails[myRegion].stats.quickplay.game_stats.damage_done,
-                            bronze: myDetails[myRegion].stats.quickplay.game_stats.medals_bronze,
-                            silver: myDetails[myRegion].stats.quickplay.game_stats.medals_silver,
-                            gold: myDetails[myRegion].stats.quickplay.game_stats.medals_gold,
-                            envKills: myDetails[myRegion].stats.quickplay.game_stats.environmental_kills,
-                            soloKills: myDetails[myRegion].stats.quickplay.game_stats.solo_kills,
-                            onFire: myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire,
-                            finalBlows: myDetails[myRegion].stats.quickplay.game_stats.final_blows,
-                            timePlayed: myDetails[myRegion].stats.quickplay.game_stats.time_played,
-                            envDeaths: myDetails[myRegion].stats.quickplay.game_stats.environmental_deaths,
-                            kpd: myDetails[myRegion].stats.quickplay.game_stats.kpd,
-                            elims: myDetails[myRegion].stats.quickplay.game_stats.eliminations,
-                            deaths: myDetails[myRegion].stats.quickplay.game_stats.deaths
-                        },
-                        most: {
-                            objKills: myDetails[myRegion].stats.quickplay.game_stats.objective_kills_most_in_game,
-                            melee: myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows_most_in_game,
-                            onFire: myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game,
-                            finalBlows: myDetails[myRegion].stats.quickplay.game_stats.final_blows_most_in_game,
-                            defAssists: myDetails[myRegion].stats.quickplay.game_stats.defensive_assists_most_in_game,
-                            offAssists: myDetails[myRegion].stats.quickplay.game_stats.offensive_assists_most_in_game,
-                            healing: myDetails[myRegion].stats.quickplay.game_stats.healing_done_most_in_game,
-                            elims: myDetails[myRegion].stats.quickplay.game_stats.eliminations_most_in_game,
-                            soloKills: myDetails[myRegion].stats.quickplay.game_stats.solo_kills_most_in_game,
-                            damageDone: myDetails[myRegion].stats.quickplay.game_stats.damage_done_most_in_game,
-                            objTime: myDetails[myRegion].stats.quickplay.game_stats.objective_time_most_in_game
-                        },
-                        average: {
-                            healing: myDetails[myRegion].stats.quickplay.average_stats.healing_done_avg,
-                            elims: myDetails[myRegion].stats.quickplay.average_stats.eliminations_avg,
-                            melee: myDetails[myRegion].stats.quickplay.average_stats.melee_final_blows_avg,
-                            finalBlows: myDetails[myRegion].stats.quickplay.average_stats.final_blows_avg,
-                            offAssists: myDetails[myRegion].stats.quickplay.average_stats.offensive_assists_avg,
-                            defAssists: myDetails[myRegion].stats.quickplay.average_stats.defensive_assists_avg,
-                            damageDone: myDetails[myRegion].stats.quickplay.average_stats.damage_done_avg,
-                            deaths: myDetails[myRegion].stats.quickplay.average_stats.deaths_avg,
-                            objTime: myDetails[myRegion].stats.quickplay.average_stats.objective_time_avg,
-                            soloKills: myDetails[myRegion].stats.quickplay.average_stats.solo_kills_avg,
-                            onFire: myDetails[myRegion].stats.quickplay.average_stats.time_spent_on_fire_avg,
-                            objKills: myDetails[myRegion].stats.quickplay.average_stats.objective_kills_avg
-                        }
-                    },
-                    comp: {
-                        total: {
-                            rate: myDetails[myRegion].stats.competitive.overall_stats.win_rate,
-                            games: myDetails[myRegion].stats.competitive.overall_stats.games,
-                            wins: myDetails[myRegion].stats.competitive.overall_stats.wins,
-                            loss: myDetails[myRegion].stats.competitive.overall_stats.losses,
-                            objKills: myDetails[myRegion].stats.competitive.game_stats.objective_kills,
-                            healing: myDetails[myRegion].stats.competitive.game_stats.healing_done,
-                            offAssists: myDetails[myRegion].stats.competitive.game_stats.offensive_assists,
-                            defAssists: myDetails[myRegion].stats.competitive.game_stats.defensive_assists,
-                            recAssists: myDetails[myRegion].stats.competitive.game_stats.recon_assists,
-                            teleDestroyed: myDetails[myRegion].stats.competitive.game_stats.teleporter_pads_destroyed,
-                            objTime: myDetails[myRegion].stats.competitive.game_stats.objective_time,
-                            melee: myDetails[myRegion].stats.competitive.game_stats.melee_final_blows,
-                            medals: myDetails[myRegion].stats.competitive.game_stats.medals,
-                            cards: myDetails[myRegion].stats.competitive.game_stats.cards,
-                            multikillBest: myDetails[myRegion].stats.competitive.game_stats.multikill_best,
-                            multikills: myDetails[myRegion].stats.competitive.game_stats.multikills,
-                            damageDone: myDetails[myRegion].stats.competitive.game_stats.damage_done,
-                            bronze: myDetails[myRegion].stats.competitive.game_stats.medals_bronze,
-                            silver: myDetails[myRegion].stats.competitive.game_stats.medals_silver,
-                            gold: myDetails[myRegion].stats.competitive.game_stats.medals_gold,
-                            envKills: myDetails[myRegion].stats.competitive.game_stats.environmental_kills,
-                            soloKills: myDetails[myRegion].stats.competitive.game_stats.solo_kills,
-                            onFire: myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire,
-                            finalBlows: myDetails[myRegion].stats.competitive.game_stats.final_blows,
-                            timePlayed: myDetails[myRegion].stats.competitive.game_stats.time_played,
-                            envDeaths: myDetails[myRegion].stats.competitive.game_stats.environmental_deaths,
-                            kpd: myDetails[myRegion].stats.competitive.game_stats.kpd,
-                            elims: myDetails[myRegion].stats.competitive.game_stats.eliminations,
-                            deaths: myDetails[myRegion].stats.competitive.game_stats.deaths
-                        },
-                        most: {
-                            objKills: myDetails[myRegion].stats.competitive.game_stats.objective_kills_most_in_game,
-                            melee: myDetails[myRegion].stats.competitive.game_stats.melee_final_blows_most_in_game,
-                            onFire: myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game,
-                            finalBlows: myDetails[myRegion].stats.competitive.game_stats.final_blows_most_in_game,
-                            defAssists: myDetails[myRegion].stats.competitive.game_stats.defensive_assists_most_in_game,
-                            offAssists: myDetails[myRegion].stats.competitive.game_stats.offensive_assists_most_in_game,
-                            healing: myDetails[myRegion].stats.competitive.game_stats.healing_done_most_in_game,
-                            elims: myDetails[myRegion].stats.competitive.game_stats.eliminations_most_in_game,
-                            soloKills: myDetails[myRegion].stats.competitive.game_stats.solo_kills_most_in_game,
-                            damageDone: myDetails[myRegion].stats.competitive.game_stats.damage_done_most_in_game,
-                            objTime: myDetails[myRegion].stats.competitive.game_stats.objective_time_most_in_game
-                        },
-                        average: {
-                            healing: myDetails[myRegion].stats.competitive.average_stats.healing_done_avg,
-                            elims: myDetails[myRegion].stats.competitive.average_stats.eliminations_avg,
-                            melee: myDetails[myRegion].stats.competitive.average_stats.melee_final_blows_avg,
-                            finalBlows: myDetails[myRegion].stats.competitive.average_stats.final_blows_avg,
-                            offAssists: myDetails[myRegion].stats.competitive.average_stats.offensive_assists_avg,
-                            defAssists: myDetails[myRegion].stats.competitive.average_stats.defensive_assists_avg,
-                            damageDone: myDetails[myRegion].stats.competitive.average_stats.damage_done_avg,
-                            deaths: myDetails[myRegion].stats.competitive.average_stats.deaths_avg,
-                            objTime: myDetails[myRegion].stats.competitive.average_stats.objective_time_avg,
-                            soloKills: myDetails[myRegion].stats.competitive.average_stats.solo_kills_avg,
-                            onFire: myDetails[myRegion].stats.competitive.average_stats.time_spent_on_fire_avg,
-                            objKills: myDetails[myRegion].stats.competitive.average_stats.objective_kills_avg
+                var tempmyDetails = response.data;
+                // console.log(tempmyDetails);
+                var myUserInput = tempmyDetails[num].Username;
+                var myUserName = myUserInput.replace("#", "-");
+                var myRegion = "eu";
+                // var myPlatform = $scope.platform;
+                console.log(myUserName);
+                $http({
+                    method: 'GET',
+                    // url: apiURL + myUserName + "/blob" + "?platform=" + "xbl",
+                    url: apiURL + myUserName + "/blob" + "?platform=" + "pc",
+                    // url: apiURL + myUserName + "/blob" + "?platform=" + "psn",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function successCallback(response) {
+                    myDetails = response.data;
+                    if (myDetails[myRegion] == null || myDetails[myRegion].stats.competitive == null) {
+                        myRegion = "us";
+                    }
+                    if (myDetails[myRegion] == null || myDetails[myRegion].stats.competitive == null) {
+                        myRegion = "kr";
+                    }
+                    if (myDetails[myRegion] == null && myDetails[myRegion].stats.competitive == null) {
+                        num++;
+                        if (num < 1001) {
+                            setTimeout(function() { $scope.getNewData(); }, 5000);
                         }
                     }
+
+
+                    // if (myDetails[myRegion] == null && myRegion == "us" && myDetails[myRegion].stats.competitive == null) myRegion = "kr";
+
+
+                    // getMyDetails(myDetails, myUserName);
+                    // console.log(myDetails);
+                    console.log(myRegion);
+                    $http.post('/api/things', {
+                        name: myUserName,
+                        level: myDetails[myRegion].stats.quickplay.overall_stats.level,
+                        prestige: myDetails[myRegion].stats.competitive.overall_stats.prestige,
+                        rank: myDetails[myRegion].stats.competitive.overall_stats.comprank,
+                        avatar: myDetails[myRegion].stats.competitive.overall_stats.avatar,
+                        qp: {
+                            total: {
+                                objKills: myDetails[myRegion].stats.quickplay.game_stats.objective_kills,
+                                rate: myDetails[myRegion].stats.quickplay.overall_stats.win_rate,
+                                games: myDetails[myRegion].stats.quickplay.overall_stats.games,
+                                wins: myDetails[myRegion].stats.quickplay.overall_stats.wins,
+                                loss: myDetails[myRegion].stats.quickplay.overall_stats.losses,
+                                healing: myDetails[myRegion].stats.quickplay.game_stats.healing_done,
+                                offAssists: myDetails[myRegion].stats.quickplay.game_stats.offensive_assists,
+                                defAssists: myDetails[myRegion].stats.quickplay.game_stats.defensive_assists,
+                                recAssists: myDetails[myRegion].stats.quickplay.game_stats.recon_assists,
+                                teleDestroyed: myDetails[myRegion].stats.quickplay.game_stats.teleporter_pads_destroyed,
+                                objTime: myDetails[myRegion].stats.quickplay.game_stats.objective_time,
+                                melee: myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows,
+                                medals: myDetails[myRegion].stats.quickplay.game_stats.medals,
+                                cards: myDetails[myRegion].stats.quickplay.game_stats.cards,
+                                multikillBest: myDetails[myRegion].stats.quickplay.game_stats.multikill_best,
+                                multikills: myDetails[myRegion].stats.quickplay.game_stats.multikills,
+                                damageDone: myDetails[myRegion].stats.quickplay.game_stats.damage_done,
+                                bronze: myDetails[myRegion].stats.quickplay.game_stats.medals_bronze,
+                                silver: myDetails[myRegion].stats.quickplay.game_stats.medals_silver,
+                                gold: myDetails[myRegion].stats.quickplay.game_stats.medals_gold,
+                                envKills: myDetails[myRegion].stats.quickplay.game_stats.environmental_kills,
+                                soloKills: myDetails[myRegion].stats.quickplay.game_stats.solo_kills,
+                                onFire: myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire,
+                                finalBlows: myDetails[myRegion].stats.quickplay.game_stats.final_blows,
+                                timePlayed: myDetails[myRegion].stats.quickplay.game_stats.time_played,
+                                envDeaths: myDetails[myRegion].stats.quickplay.game_stats.environmental_deaths,
+                                kpd: myDetails[myRegion].stats.quickplay.game_stats.kpd,
+                                elims: myDetails[myRegion].stats.quickplay.game_stats.eliminations,
+                                deaths: myDetails[myRegion].stats.quickplay.game_stats.deaths
+                            },
+                            most: {
+                                objKills: myDetails[myRegion].stats.quickplay.game_stats.objective_kills_most_in_game,
+                                melee: myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows_most_in_game,
+                                onFire: myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game,
+                                finalBlows: myDetails[myRegion].stats.quickplay.game_stats.final_blows_most_in_game,
+                                defAssists: myDetails[myRegion].stats.quickplay.game_stats.defensive_assists_most_in_game,
+                                offAssists: myDetails[myRegion].stats.quickplay.game_stats.offensive_assists_most_in_game,
+                                healing: myDetails[myRegion].stats.quickplay.game_stats.healing_done_most_in_game,
+                                elims: myDetails[myRegion].stats.quickplay.game_stats.eliminations_most_in_game,
+                                soloKills: myDetails[myRegion].stats.quickplay.game_stats.solo_kills_most_in_game,
+                                damageDone: myDetails[myRegion].stats.quickplay.game_stats.damage_done_most_in_game,
+                                objTime: myDetails[myRegion].stats.quickplay.game_stats.objective_time_most_in_game
+                            },
+                            average: {
+                                healing: myDetails[myRegion].stats.quickplay.average_stats.healing_done_avg,
+                                elims: myDetails[myRegion].stats.quickplay.average_stats.eliminations_avg,
+                                melee: myDetails[myRegion].stats.quickplay.average_stats.melee_final_blows_avg,
+                                finalBlows: myDetails[myRegion].stats.quickplay.average_stats.final_blows_avg,
+                                offAssists: myDetails[myRegion].stats.quickplay.average_stats.offensive_assists_avg,
+                                defAssists: myDetails[myRegion].stats.quickplay.average_stats.defensive_assists_avg,
+                                damageDone: myDetails[myRegion].stats.quickplay.average_stats.damage_done_avg,
+                                deaths: myDetails[myRegion].stats.quickplay.average_stats.deaths_avg,
+                                objTime: myDetails[myRegion].stats.quickplay.average_stats.objective_time_avg,
+                                soloKills: myDetails[myRegion].stats.quickplay.average_stats.solo_kills_avg,
+                                onFire: myDetails[myRegion].stats.quickplay.average_stats.time_spent_on_fire_avg,
+                                objKills: myDetails[myRegion].stats.quickplay.average_stats.objective_kills_avg
+                            }
+                        },
+                        comp: {
+                            total: {
+                                rate: myDetails[myRegion].stats.competitive.overall_stats.win_rate,
+                                games: myDetails[myRegion].stats.competitive.overall_stats.games,
+                                wins: myDetails[myRegion].stats.competitive.overall_stats.wins,
+                                loss: myDetails[myRegion].stats.competitive.overall_stats.losses,
+                                objKills: myDetails[myRegion].stats.competitive.game_stats.objective_kills,
+                                healing: myDetails[myRegion].stats.competitive.game_stats.healing_done,
+                                offAssists: myDetails[myRegion].stats.competitive.game_stats.offensive_assists,
+                                defAssists: myDetails[myRegion].stats.competitive.game_stats.defensive_assists,
+                                recAssists: myDetails[myRegion].stats.competitive.game_stats.recon_assists,
+                                teleDestroyed: myDetails[myRegion].stats.competitive.game_stats.teleporter_pads_destroyed,
+                                objTime: myDetails[myRegion].stats.competitive.game_stats.objective_time,
+                                melee: myDetails[myRegion].stats.competitive.game_stats.melee_final_blows,
+                                medals: myDetails[myRegion].stats.competitive.game_stats.medals,
+                                cards: myDetails[myRegion].stats.competitive.game_stats.cards,
+                                multikillBest: myDetails[myRegion].stats.competitive.game_stats.multikill_best,
+                                multikills: myDetails[myRegion].stats.competitive.game_stats.multikills,
+                                damageDone: myDetails[myRegion].stats.competitive.game_stats.damage_done,
+                                bronze: myDetails[myRegion].stats.competitive.game_stats.medals_bronze,
+                                silver: myDetails[myRegion].stats.competitive.game_stats.medals_silver,
+                                gold: myDetails[myRegion].stats.competitive.game_stats.medals_gold,
+                                envKills: myDetails[myRegion].stats.competitive.game_stats.environmental_kills,
+                                soloKills: myDetails[myRegion].stats.competitive.game_stats.solo_kills,
+                                onFire: myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire,
+                                finalBlows: myDetails[myRegion].stats.competitive.game_stats.final_blows,
+                                timePlayed: myDetails[myRegion].stats.competitive.game_stats.time_played,
+                                envDeaths: myDetails[myRegion].stats.competitive.game_stats.environmental_deaths,
+                                kpd: myDetails[myRegion].stats.competitive.game_stats.kpd,
+                                elims: myDetails[myRegion].stats.competitive.game_stats.eliminations,
+                                deaths: myDetails[myRegion].stats.competitive.game_stats.deaths
+                            },
+                            most: {
+                                objKills: myDetails[myRegion].stats.competitive.game_stats.objective_kills_most_in_game,
+                                melee: myDetails[myRegion].stats.competitive.game_stats.melee_final_blows_most_in_game,
+                                onFire: myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game,
+                                finalBlows: myDetails[myRegion].stats.competitive.game_stats.final_blows_most_in_game,
+                                defAssists: myDetails[myRegion].stats.competitive.game_stats.defensive_assists_most_in_game,
+                                offAssists: myDetails[myRegion].stats.competitive.game_stats.offensive_assists_most_in_game,
+                                healing: myDetails[myRegion].stats.competitive.game_stats.healing_done_most_in_game,
+                                elims: myDetails[myRegion].stats.competitive.game_stats.eliminations_most_in_game,
+                                soloKills: myDetails[myRegion].stats.competitive.game_stats.solo_kills_most_in_game,
+                                damageDone: myDetails[myRegion].stats.competitive.game_stats.damage_done_most_in_game,
+                                objTime: myDetails[myRegion].stats.competitive.game_stats.objective_time_most_in_game
+                            },
+                            average: {
+                                healing: myDetails[myRegion].stats.competitive.average_stats.healing_done_avg,
+                                elims: myDetails[myRegion].stats.competitive.average_stats.eliminations_avg,
+                                melee: myDetails[myRegion].stats.competitive.average_stats.melee_final_blows_avg,
+                                finalBlows: myDetails[myRegion].stats.competitive.average_stats.final_blows_avg,
+                                offAssists: myDetails[myRegion].stats.competitive.average_stats.offensive_assists_avg,
+                                defAssists: myDetails[myRegion].stats.competitive.average_stats.defensive_assists_avg,
+                                damageDone: myDetails[myRegion].stats.competitive.average_stats.damage_done_avg,
+                                deaths: myDetails[myRegion].stats.competitive.average_stats.deaths_avg,
+                                objTime: myDetails[myRegion].stats.competitive.average_stats.objective_time_avg,
+                                soloKills: myDetails[myRegion].stats.competitive.average_stats.solo_kills_avg,
+                                onFire: myDetails[myRegion].stats.competitive.average_stats.time_spent_on_fire_avg,
+                                objKills: myDetails[myRegion].stats.competitive.average_stats.objective_kills_avg
+                            }
+                        },
+                        heroes: {
+                            playtime: {
+                                ana: myDetails[myRegion].heroes.playtime.competitive.ana + myDetails[myRegion].heroes.playtime.quickplay.ana,
+                                bastion: myDetails[myRegion].heroes.playtime.competitive.bastion + myDetails[myRegion].heroes.playtime.quickplay.bastion,
+                                dva: myDetails[myRegion].heroes.playtime.competitive.dva + myDetails[myRegion].heroes.playtime.quickplay.dva,
+                                genji: myDetails[myRegion].heroes.playtime.competitive.genji + myDetails[myRegion].heroes.playtime.quickplay.genji,
+                                hanzo: myDetails[myRegion].heroes.playtime.competitive.hanzo + myDetails[myRegion].heroes.playtime.quickplay.hanzo,
+                                junkrat: myDetails[myRegion].heroes.playtime.competitive.junkrat + myDetails[myRegion].heroes.playtime.quickplay.junkrat,
+                                lucio: myDetails[myRegion].heroes.playtime.competitive.lucio + myDetails[myRegion].heroes.playtime.quickplay.lucio,
+                                mccree: myDetails[myRegion].heroes.playtime.competitive.mccree + myDetails[myRegion].heroes.playtime.quickplay.mccree,
+                                mei: myDetails[myRegion].heroes.playtime.competitive.mei + myDetails[myRegion].heroes.playtime.quickplay.mei,
+                                mercy: myDetails[myRegion].heroes.playtime.competitive.mercy + myDetails[myRegion].heroes.playtime.quickplay.mercy,
+                                orisa: myDetails[myRegion].heroes.playtime.competitive.orisa + myDetails[myRegion].heroes.playtime.quickplay.orisa,
+                                pharah: myDetails[myRegion].heroes.playtime.competitive.pharah + myDetails[myRegion].heroes.playtime.quickplay.pharah,
+                                reaper: myDetails[myRegion].heroes.playtime.competitive.reaper + myDetails[myRegion].heroes.playtime.quickplay.reaper,
+                                reinhardt: myDetails[myRegion].heroes.playtime.competitive.reinhardt + myDetails[myRegion].heroes.playtime.quickplay.reinhardt,
+                                roadhog: myDetails[myRegion].heroes.playtime.competitive.roadhog + myDetails[myRegion].heroes.playtime.quickplay.roadhog,
+                                soldier76: myDetails[myRegion].heroes.playtime.competitive.soldier76 + myDetails[myRegion].heroes.playtime.quickplay.soldier76,
+                                sombra: myDetails[myRegion].heroes.playtime.competitive.sombra + myDetails[myRegion].heroes.playtime.quickplay.sombra,
+                                symmetra: myDetails[myRegion].heroes.playtime.competitive.symmetra + myDetails[myRegion].heroes.playtime.quickplay.symmetra,
+                                torbjorn: myDetails[myRegion].heroes.playtime.competitive.torbjorn + myDetails[myRegion].heroes.playtime.quickplay.torbjorn,
+                                tracer: myDetails[myRegion].heroes.playtime.competitive.tracer + myDetails[myRegion].heroes.playtime.quickplay.tracer,
+                                widowmaker: myDetails[myRegion].heroes.playtime.competitive.widowmaker + myDetails[myRegion].heroes.playtime.quickplay.widowmaker,
+                                winston: myDetails[myRegion].heroes.playtime.competitive.winston + myDetails[myRegion].heroes.playtime.quickplay.winston,
+                                zarya: myDetails[myRegion].heroes.playtime.competitive.zarya + myDetails[myRegion].heroes.playtime.quickplay.zarya,
+                                zenyatta: myDetails[myRegion].heroes.playtime.competitive.zenyatta + myDetails[myRegion].heroes.playtime.quickplay.zenyatta
+                            }
+                        }
+                    });
+                    console.log("Added " + myUserName + " to MongoDB");
+                    num++;
+                    if (num < 1001) {
+                        setTimeout(function() { $scope.getNewData(); }, 5000);
+                    }
+                }, function errorCallback(response) {
+                    console.log(response.error);
+                    num++;
+                    if (num < 1001) {
+                        setTimeout(function() { $scope.getNewData(); }, 5000);
+                    }
                 });
-            }, function errorCallback(response) { alert(response.error); });
+            });
         }
 
-        function getMyDetails(myDetails, myUserName) {
-            var myRegion = $scope.data.myRegionSelect;
-            $scope.myAvatar = myDetails[myRegion].stats.competitive.overall_stats.avatar;
-            $scope.myRankIcon = myDetails[myRegion].stats.competitive.overall_stats.rank_image;
-            $scope.myUsername = myUserName;
-            $scope.myLevel = myDetails[myRegion].stats.quickplay.overall_stats.level;
-            $scope.myLevelFrame = myDetails[myRegion].stats.competitive.overall_stats.comprank;
-            // $scope.myRank = myDetails[myRegion].stats.competitive.overall_stats.comprank;
-            $scope.myQPWins = myDetails[myRegion].stats.quickplay.overall_stats.wins;
-            $scope.myCompWins = myDetails[myRegion].stats.competitive.overall_stats.wins;
-            $scope.myQPPlaytime = myDetails[myRegion].stats.quickplay.game_stats.time_played;
-            $scope.myCompPlaytime = myDetails[myRegion].stats.competitive.game_stats.time_played
-            $scope.myStar = myDetails[myRegion].stats.competitive.overall_stats.prestige;
 
-            // //-------------------------------------------------------
-            // var y = myDetails.data.games.competitive.wins / myDetails.data.games.competitive.played;
-            // var myCWR = (y * 100);
-            // $scope.myCompWinRate = myCWR.toFixed(2) + "%";
-            // myCall = true;
-            // if (oppCall == true && myCall == true) {
-            //     compareDetails();
-            //     $scope.comparison = true;
-            // }
-            $scope.myUserInput = '';
-        }
+        // function getMyDetails(myDetails, myUserName) {
+        //     var myRegion = $scope.data.myRegionSelect;
+        //     $scope.myAvatar = myDetails[myRegion].stats.competitive.overall_stats.avatar;
+        //     $scope.myRankIcon = myDetails[myRegion].stats.competitive.overall_stats.rank_image;
+        //     $scope.myUsername = myUserName;
+        //     $scope.myLevel = myDetails[myRegion].stats.quickplay.overall_stats.level;
+        //     $scope.myLevelFrame = myDetails[myRegion].stats.competitive.overall_stats.comprank;
+        //     // $scope.myRank = myDetails[myRegion].stats.competitive.overall_stats.comprank;
+        //     $scope.myQPWins = myDetails[myRegion].stats.quickplay.overall_stats.wins;
+        //     $scope.myCompWins = myDetails[myRegion].stats.competitive.overall_stats.wins;
+        //     $scope.myQPPlaytime = myDetails[myRegion].stats.quickplay.game_stats.time_played;
+        //     $scope.myCompPlaytime = myDetails[myRegion].stats.competitive.game_stats.time_played
+        //     $scope.myStar = myDetails[myRegion].stats.competitive.overall_stats.prestige;
+        //     $scope.myUserInput = '';
+        // }
 
         function getAllMyHeroesQP(allMyHeroesQP) {
             $scope.myMeleeFinalBlowsQP = allMyHeroesQP.MeleeFinalBlows;
