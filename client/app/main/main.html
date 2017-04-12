@@ -1,22 +1,18 @@
 <div id="formWrapper">
     <div layout="row" layout-xs="column">
         <div flex>
-            <form ng-submit="getNewData();">
+            <form ng-submit="getMyData();">
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Platform</label>
-                    <md-select ng-model="data.myPlatformSelect">
-                        <md-option ng-repeat="platform in platforms" value="{{platform.abbrev}}">
-                            {{platform.abbrev}}
-                        </md-option>
+                    <md-select ng-model="myPlatform">
+                        <md-option ng-repeat="myPlatform in myPlatforms" value="{{myPlatform}}">{{myPlatform}}</md-option>
                     </md-select>
                 </md-input-container>
                 <br>
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Region</label>
-                    <md-select ng-model="data.myRegionSelect">
-                        <md-option ng-repeat="region in regions" value="{{region.abbrev}}">
-                            {{region.abbrev}}
-                        </md-option>
+                    <md-select ng-model="myRegion">
+                        <md-option ng-repeat="myRegion in myRegions" value="{{myRegion}}">{{myRegion}}</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container>
@@ -26,27 +22,29 @@
             </form>
         </div>
         <div flex>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Platform</label>
-                <md-select ng-model="data.oppPlatformSelect">
-                    <md-option ng-repeat="platform in platforms" value="{{platform.abbrev}}">
-                        {{platform.abbrev}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <br>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Region</label>
-                <md-select ng-model="data.oppRegionSelect">
-                    <md-option ng-repeat="region in regions" value="{{region.abbrev}}">
-                        {{region.abbrev}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container>
-                <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
-                <input type="text" ng-model="oppUserInput" ng-submit="getOppData();">
-            </md-input-container>
+            <form ng-submit="getOppData();">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Platform</label>
+                    <md-select ng-model="oppPlatform">
+                        <md-option ng-repeat="oppPlatform in oppPlatforms" value="{{oppPlatform}}">
+                            {{oppPlatform}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <br>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Region</label>
+                    <md-select ng-model="oppRegion">
+                        <md-option ng-repeat="oppRegion in oppRegions" value="{{oppRegion}}">
+                            {{oppRegion}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container>
+                    <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
+                    <input type="text" ng-model="oppUserInput" ng-submit="getOppData();">
+                </md-input-container>
+            </form>
         </div>
     </div>
     <div class="row" ng-hide="">
