@@ -2,44 +2,28 @@
 angular.module('phleepApp')
     .controller('MainCtrl', function($scope, $http, socket) {
 
-        $http.get('/api/things').success(function(awesomeThings) {
+        $http.get('/api/overwatchs').success(function(awesomeThings) {
             $scope.awesomeThings = awesomeThings;
-            socket.syncUpdates('thing', $scope.awesomeThings);
+            socket.syncUpdates('overwatch', $scope.awesomeThings);
         });
 
-        $scope.deleteThing = function(thing) {
-            $http.delete('/api/things/' + thing._id);
+        $scope.deleteThing = function(overwatch) {
+            $http.delete('/api/overwatchs/' + overwatch._id);
         };
 
         $scope.$on('$destroy', function() {
-            socket.unsyncUpdates('thing');
+            socket.unsyncUpdates('overwatch');
         });
 
 
-        // var apiURL = "http://ec2-34-252-173-0.eu-west-1.compute.amazonaws.com:4444/api/v3/u/";
-        var apiURL = "https://owapi.net/api/v3/u/"
-
-        $scope.data = {
-            myPlatformSelect: "pc",
-            myRegionSelect: "eu",
-            myHeroSelect: "Ana",
-            oppPlatformSelect: "pc",
-            oppRegionSelect: "pc",
-            oppHeroSelect: "Ana"
-        };
-
-        // $scope.platforms = ('pc psn xbl').split(' ').map(function(platform) {
-        //     return { abbrev: platform };
-        // });
-
-        // $scope.regions = ('eu us kr any').split(' ').map(function(region) {
-        //     return { abbrev: region };
-        // });
+        // var apiURL = "http://ec2-34-252-173-0.eu-west-1.compute.amazonaws.com:4444";
+        var apiURL = "https://owapi.net";
+        var LOL_API_KEY = "api_key=690b6aa5-4f70-4eac-8d8c-808bd08ead0c";
 
         $scope.myPlatforms = ["pc", "xbl", "psn"];
         $scope.myRegions = ["eu", "us", "kr", "any"];
         $scope.oppPlatforms = ["pc", "xbl", "psn"];
-        $scope.oppRegions = ["eu", "us", "kr", "any"];
+        $scope.oppRegions = ["euw", "na", "kr", "any"];
 
 
         //My details
@@ -55,26 +39,12 @@ angular.module('phleepApp')
 
         //Opponent details
         var oppDetails = [];
-        var allOppHeroesQP = [];
-        var allOppHeroesComp = [];
-        var oppHeroQP = [];
-        var oppHeroComp = [];
-        var oppPlayedHeroesQP = [];
-        var oppPlayedHeroesComp = [];
-        var oppAchievements = [];
-
-        var myCall = false;
-        var oppCall = false;
-        var comparison = false;
-        $scope.comparison = comparison;
+        var rankedMatch = [];
+        var unrankedMatch = [];
+        var leagueStats = [];
+        var profileStats = [];
+        var userID;
         var num = 0;
-
-        //---------------------------------------------------------------------------------------------------------------------------
-        //MY DETAILS
-
-        function clicked() {
-            console.log("FUCKIGN CLICKED");
-        }
 
         $scope.gatherData = function() {
             console.log("initial num " + num);
@@ -93,7 +63,7 @@ angular.module('phleepApp')
                 $http({
                     method: 'GET',
                     // url: apiURL + myUserName + "/blob" + "?platform=" + "xbl",
-                    url: apiURL + myUserName + "/blob" + "?platform=" + "pc",
+                    url: apiURL + "/api/v3/u/" + myUserName + "/blob" + "?platform=" + "pc",
                     // url: apiURL + myUserName + "/blob" + "?platform=" + "psn",
                     headers: {
                         'Content-Type': 'application/json'
@@ -113,7 +83,7 @@ angular.module('phleepApp')
                         }
                     }
                     console.log(myRegion);
-                    $http.post('/api/things', {
+                    $http.post('/api/overwatchs', {
                         name: myUserName,
                         level: myDetails[myRegion].stats.quickplay.overall_stats.level,
                         prestige: myDetails[myRegion].stats.competitive.overall_stats.prestige,
@@ -289,13 +259,13 @@ angular.module('phleepApp')
             var myPlatform = $scope.myPlatform;
             $http({
                 method: 'GET',
-                url: apiURL + myUserName + "/blob" + "?platform=" + myPlatform,
+                url: apiURL + "/api/v3/u/" + myUserName + "/blob" + "?platform=" + myPlatform,
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then(function successCallback(response) {
                 myDetails = response.data;
-                $http.post('/api/things', {
+                $http.post('/api/overwatchs', {
                     name: myUserName,
                     level: myDetails[myRegion].stats.quickplay.overall_stats.level,
                     prestige: myDetails[myRegion].stats.competitive.overall_stats.prestige,
@@ -455,6 +425,165 @@ angular.module('phleepApp')
             }, function errorCallback(response) {
                 console.log(response.error);
             });
+        }
+
+        $scope.getLOLData = function() {
+            var oppRegion = $scope.oppRegion;
+            console.log("Initial num: " + num);
+            $http({
+                method: 'GET',
+                url: "http://127.0.0.1:8080/leagueKR_t1.json",
+                type: 'json'
+            }).then(function successCallback(response) {
+                    var tempmyDetails = response.data;
+                    var myUserName = tempmyDetails[num].username;
+                    $http({
+                        method: 'GET',
+                        url: "https://" + oppRegion + ".api.riotgames.com/lol/summoner/v3/summoners/by-name/" + myUserName + "?" + LOL_API_KEY,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function successCallback(response) {
+                            myDetails = response.data;
+                            userID = myDetails.id;
+                            $http({
+                                method: 'GET',
+                                url: "https://" + oppRegion + ".api.riotgames.com/api/lol/" + oppRegion + "/v1.3/stats/by-summoner/" + userID + "/summary?season=SEASON2017&" + LOL_API_KEY,
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(function successCallback(response) {
+                                    var gameDetails = response.data;
+                                    if (gameDetails.playerStatSummaries != null) {
+                                        gameDetails.playerStatSummaries.forEach(function(res) {
+                                            if (res.playerStatSummaryType == "RankedSolo5x5") {
+                                                rankedMatch = res;
+                                            }
+                                            if (res.playerStatSummaryType == "Unranked") {
+                                                unrankedMatch = res;
+                                            }
+                                        });
+
+                                        $http({
+                                            method: 'GET',
+                                            url: "https://" + oppRegion + ".api.riotgames.com/api/lol/" + oppRegion + "/v1.3/stats/by-summoner/" + userID + "/ranked?season=SEASON2017&" + LOL_API_KEY,
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            }
+                                        }).then(function successCallback(response) {
+                                                var statsDetails = response.data;
+                                                statsDetails.champions.forEach(function(res) {
+                                                    if (res.id == "0") {
+                                                        leagueStats = res;
+                                                    }
+                                                });
+                                                $http({
+                                                    method: 'GET',
+                                                    url: "https://" + oppRegion + ".api.riotgames.com/api/lol/" + oppRegion + "/v2.5/league/by-summoner/" + userID + "/entry?" + LOL_API_KEY,
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    }
+                                                }).then(function successCallback(response) {
+                                                    var profileDetails = response.data;
+                                                    $http.post('/api/leagues', {
+                                                        name: myDetails.name,
+                                                        tier: profileDetails[userID]["0"].tier,
+                                                        division: profileDetails[userID]["0"].entries["0"].division,
+                                                        leaguePoints: profileDetails[userID]["0"].entries["0"].leaguePoints,
+                                                        profileIconId: myDetails.profileIconId,
+                                                        ranked5x5: {
+                                                            wins: rankedMatch.wins,
+                                                            losses: rankedMatch.losses,
+                                                            aggregatedStats: {
+                                                                totalKills: rankedMatch.aggregatedStats.totalChampionKills,
+                                                                totalCS: rankedMatch.aggregatedStats.totalMinionKills,
+                                                                totalTurretKills: rankedMatch.aggregatedStats.totalTurretsKilled,
+                                                                totalNeutralMinionKills: rankedMatch.aggregatedStats.totalNeutralMinionsKilled,
+                                                                totalAssists: rankedMatch.totalAssists
+                                                            }
+                                                        },
+                                                        unranked5x5: {
+                                                            wins: unrankedMatch.winston,
+                                                            aggregatedStats: {
+                                                                totalKills: unrankedMatch.aggregatedStats.totalChampionKills,
+                                                                totalCS: unrankedMatch.aggregatedStats.totalMinionKills,
+                                                                totalTurretKills: unrankedMatch.aggregatedStats.totalTurretsKilled,
+                                                                totalNeutralMinionKills: unrankedMatch.aggregatedStats.totalNeutralMinionsKilled,
+                                                                totalAssists: unrankedMatch.totalAssists
+                                                            }
+                                                        },
+                                                        stats: {
+                                                            loss: leagueStats.stats.totalSessionsLost,
+                                                            wins: leagueStats.stats.totalSessionsWon,
+                                                            kills: leagueStats.stats.totalChampionKills,
+                                                            killingSpree: leagueStats.stats.killingSpree,
+                                                            totalDamageDealt: leagueStats.stats.totalDamageDealt,
+                                                            totalDamageTaken: leagueStats.stats.totalDamageTaken,
+                                                            mostKillsPerGame: leagueStats.stats.mostChampionKillsPerSession,
+                                                            totalCS: leagueStats.stats.totalMinionKills,
+                                                            totalDoubleKills: leagueStats.stats.totalDoubleKills,
+                                                            totalTripleKills: leagueStats.stats.totalTripleKills,
+                                                            totalQuadraKills: leagueStats.stats.totalQuadraKills,
+                                                            totalPentaKills: leagueStats.stats.totalPentaKills,
+                                                            totalUnrealKills: leagueStats.stats.totalUnrealKills,
+                                                            totalDeaths: leagueStats.stats.totalDeathsPerSession,
+                                                            totalGoldEarned: leagueStats.stats.totalGoldEarned,
+                                                            totalTurretsKilled: leagueStats.stats.totalTurretsKilled,
+                                                            totalPhysicalDamageDealt: leagueStats.stats.totalPhysicalDamageDealt,
+                                                            totalMagicDamageDealt: leagueStats.stats.totalMagicDamageDealt,
+                                                            totalNeutralMinionsKilled: leagueStats.stats.totalNeutralMinionsKilled,
+                                                            totalFirstBlood: leagueStats.stats.totalFirstBlood,
+                                                            totalAssists: leagueStats.stats.totalAssists,
+                                                            totalHeal: leagueStats.stats.totalHeal,
+                                                            maxLargestKillingSpree: leagueStats.stats.maxLargestKillingSpree,
+                                                            maxChampionsKilled: leagueStats.stats.maxChampionsKilled,
+                                                            maxNumDeaths: leagueStats.stats.maxNumDeaths,
+                                                            maxTimePlayed: leagueStats.stats.maxTimePlayed,
+                                                            maxTimeSpentLiving: leagueStats.stats.maxTimeSpentLiving
+                                                        }
+                                                    });
+                                                });
+                                                console.log("Added " + myUserName + " to MongoDB");
+                                                num++;
+                                                if (num < 3000) {
+                                                    setTimeout(function() { $scope.getLOLData(); }, 5000);
+                                                }
+                                            },
+                                            function errorCallback(response) {
+                                                console.log(response.error);
+                                                num++;
+                                                if (num < 3000) {
+                                                    setTimeout(function() { $scope.getLOLData(); }, 5000);
+                                                }
+                                            });
+                                    } else {
+                                        num++;
+                                        setTimeout(function() { $scope.getLOLData(); }, 5000);
+                                    }
+                                },
+                                function errorCallback(response) {
+                                    console.log(response.error);
+                                    num++;
+                                    if (num < 3000) {
+                                        setTimeout(function() { $scope.getLOLData(); }, 5000);
+                                    }
+                                });
+                        },
+                        function errorCallback(response) {
+                            console.log(response.error);
+                            num++;
+                            if (num < 3000) {
+                                setTimeout(function() { $scope.getLOLData(); }, 5000);
+                            }
+                        });
+                },
+                function errorCallback(response) {
+                    console.log(response.error);
+                    num++;
+                    if (num < 3000) {
+                        setTimeout(function() { $scope.getLOLData(); }, 5000);
+                    }
+                });
         }
 
 

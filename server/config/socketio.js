@@ -18,7 +18,8 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/thing/thing.socket').register(socket);
+  require('../api/overwatch/overwatch.socket').register(socket);
+  require('../api/leagueoflegends/lol.socket').register(socket);
 }
 
 module.exports = function (socketio) {
