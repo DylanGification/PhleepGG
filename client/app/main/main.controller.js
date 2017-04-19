@@ -25,7 +25,6 @@ angular.module('phleepApp')
         $scope.oppPlatforms = ["pc", "xbl", "psn"];
         $scope.oppRegions = ["eu", "us", "kr", "any"];
 
-
         //League of Legends Regions
         $scope.myLoLRegions = ["euw", "na", "kr", "ru", "eune", "oce", "tr", "jp", "br", "las"];
         $scope.oppLoLRegions = ["euw", "na", "kr", "ru", "eune", "oce", "tr", "jp", "br", "las"];
@@ -33,12 +32,6 @@ angular.module('phleepApp')
 
         //My details
         var myDetails = [];
-        var allMyHeroesQP = [];
-        var allMyHeroesComp = [];
-        var myHeroQP = [];
-        var myHeroComp = [];
-        var myPlayedHeroesQP = [];
-        var myPlayedHeroesComp = [];
         var myAchievements = [];
         $scope.myUserInput = "";
 
@@ -48,6 +41,7 @@ angular.module('phleepApp')
         var unrankedMatch = [];
         var leagueStats = [];
         var profileStats = [];
+        $scope.hideStats = false;
         var userID;
         var num = 0;
 
@@ -594,18 +588,42 @@ angular.module('phleepApp')
 
         function getMyDetails(myDetails) {
             var myRegion = $scope.myRegion;
+            var myPlatform = $scope.myPlatform;
             var myUserName = $scope.myUserInput.replace("#", "-");
             $scope.myAvatar = myDetails[myRegion].stats.competitive.overall_stats.avatar;
-            $scope.myRankIcon = myDetails[myRegion].stats.competitive.overall_stats.rank_image;
-            $scope.myUsername = myUserName;
+            if (myPlatform == "pc") {
+                $scope.myUsername = myUserName.substring(0, myUserName.indexOf('-'));
+            } else {
+                $scope.myUsername = myUserName;
+            }
             $scope.myLevel = myDetails[myRegion].stats.quickplay.overall_stats.level;
-            $scope.myLevelFrame = myDetails[myRegion].stats.competitive.overall_stats.comprank;
-            // $scope.myRank = myDetails[myRegion].stats.competitive.overall_stats.comprank;
-            $scope.myQPWins = myDetails[myRegion].stats.quickplay.overall_stats.wins;
+            $scope.myRank = myDetails[myRegion].stats.competitive.overall_stats.comprank;
+            $scope.myWinRate = myDetails[myRegion].stats.competitive.overall_stats.win_rate;
             $scope.myCompWins = myDetails[myRegion].stats.competitive.overall_stats.wins;
-            $scope.myQPPlaytime = myDetails[myRegion].stats.quickplay.game_stats.time_played;
             $scope.myCompPlaytime = myDetails[myRegion].stats.competitive.game_stats.time_played
-            $scope.myStar = myDetails[myRegion].stats.competitive.overall_stats.prestige;
+            $scope.myPrestige = myDetails[myRegion].stats.competitive.overall_stats.prestige;
+            $scope.myTier = myDetails[myRegion].stats.competitive.overall_stats.tier;
+            var myTier = $scope.myTier;
+            getRankImage(myTier);
             $scope.myUserInput = '';
+            $scope.hideStats = false;
+        }
+
+        function getRankImage(myTier) {
+            if (myTier == "bronze") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-1.png";
+            } else if (myTier == "silver") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-2.png";
+            } else if (myTier == "gold") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-3.png";
+            } else if (myTier == "platinum") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-4.png";
+            } else if (myTier == "diamond") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-5.png";
+            } else if (myTier == "master") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-6.png";
+            } else if (myTier == "grandmaster") {
+                $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-7.png";
+            }
         }
     });
