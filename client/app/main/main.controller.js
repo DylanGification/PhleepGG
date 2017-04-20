@@ -20,10 +20,10 @@ angular.module('phleepApp')
         var apiURL = "https://owapi.net";
         var LOL_API_KEY = "api_key=690b6aa5-4f70-4eac-8d8c-808bd08ead0c";
 
-        $scope.myPlatforms = ["pc", "xbl", "psn"];
-        $scope.myRegions = ["eu", "us", "kr", "any"];
-        $scope.oppPlatforms = ["pc", "xbl", "psn"];
-        $scope.oppRegions = ["eu", "us", "kr", "any"];
+        $scope.myPlatforms = ["PC", "XBL", "PSN"];
+        $scope.myRegions = ["EU", "US", "KR", "ANY"];
+        $scope.oppPlatforms = ["PC", "XBL", "PSN"];
+        $scope.oppRegions = ["EU", "US", "KR", "ANY"];
 
         //League of Legends Regions
         $scope.myLoLRegions = ["euw", "na", "kr", "ru", "eune", "oce", "tr", "jp", "br", "las"];
@@ -57,7 +57,7 @@ angular.module('phleepApp')
                 // console.log(tempmyDetails);
                 var myUserInput = tempmyDetails[num].Username;
                 var myUserName = myUserInput.replace("#", "-");
-                var myRegion = "eu";
+                var myRegion = $scope.myRegion.toLowerCase();
                 // var myPlatform = $scope.platform;
                 console.log(myUserName);
                 $http({
@@ -256,8 +256,8 @@ angular.module('phleepApp')
         $scope.getMyData = function() {
             $scope.hideLoader = false;
             var myUserName = $scope.myUserInput.replace("#", "-");
-            var myRegion = $scope.myRegion;
-            var myPlatform = $scope.myPlatform;
+            var myRegion = $scope.myRegion.toLowerCase();
+            var myPlatform = $scope.myPlatform.toLowerCase();
             $http({
                 method: 'GET',
                 url: apiURL + "/api/v3/u/" + myUserName + "/blob" + "?platform=" + myPlatform,
@@ -589,8 +589,8 @@ angular.module('phleepApp')
 
 
         function getMyDetails(myDetails) {
-            var myRegion = $scope.myRegion;
-            var myPlatform = $scope.myPlatform;
+            var myRegion = $scope.myRegion.toLowerCase();
+            var myPlatform = $scope.myPlatform.toLowerCase();
             var myUserName = $scope.myUserInput.replace("#", "-");
             $scope.myAvatar = myDetails[myRegion].stats.competitive.overall_stats.avatar;
             if (myPlatform == "pc") {
