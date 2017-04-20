@@ -1,5 +1,5 @@
 'use strict';
-angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socket) {
+angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socket, $rootScope) {
 
     $scope.$on('$destroy', function() {
         socket.unsyncUpdates('overwatch');
@@ -620,11 +620,17 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.hideLoader = true;
     }
 
-    function switchToLOL() {
-
+    $scope.getGeneral = function() {
+        return 'partials/issues.html';
     }
 
-    function switchToOW() {
-
+    $scope.getProjected = function() {
+        return 'partials/issues.html';
+    }
+    $scope.getAnalysis = function() {
+        return 'partials/issues.html';
+    }
+    $scope.getComparison = function() {
+        return 'partials/issues.html';
     }
 });

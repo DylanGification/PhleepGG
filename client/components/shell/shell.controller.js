@@ -1,34 +1,50 @@
 'use strict';
 
 angular.module('phleepApp')
-  .controller('ShellCtrl', function ($mdSidenav, $mdDialog, $scope, $location, Auth) {
+    .controller('ShellCtrl', function($mdSidenav, $mdDialog, $mdColorPalette, $scope, $rootScope, $location, Auth) {
 
-    
-    $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.isAdmin = Auth.isAdmin;
-    $scope.getCurrentUser = Auth.getCurrentUser;
+        $scope.isLoggedIn = Auth.isLoggedIn;
+        $scope.isAdmin = Auth.isAdmin;
+        $scope.getCurrentUser = Auth.getCurrentUser;
 
-    $scope.logout = function() {
-      Auth.logout();
-      $location.path('/login');
-    };
+        $rootScope.selectedGame = "OW";
 
-    $scope.isActive = function(route) {
-      return route === $location.path();
-    };
+        $scope.owChosen = true;
+        $scope.lolChosen = false;
 
-    $scope.toggleLeft = function() {
-      $mdSidenav('left').toggle();
-    };
+        $scope.logout = function() {
+            Auth.logout();
+            $location.path('/login');
+        };
 
-    var originatorEv;
-    $scope.openMenu = function($mdOpenMenu, ev) {
-      originatorEv = ev;
-      $mdOpenMenu(ev);
-    };
+        $scope.isActive = function(route) {
+            return route === $location.path();
+        };
 
-    $scope.notificationsEnabled = true;
-    $scope.toggleNotifications = function() {
-      $scope.notificationsEnabled = !$scope.notificationsEnabled;
-    };
-  });
+        $scope.toggleLeft = function() {
+            $mdSidenav('left').toggle();
+        };
+
+        var originatorEv;
+        $scope.openMenu = function($mdOpenMenu, ev) {
+            originatorEv = ev;
+            $mdOpenMenu(ev);
+        };
+
+        $scope.notificationsEnabled = true;
+        $scope.toggleNotifications = function() {
+            $scope.notificationsEnabled = !$scope.notificationsEnabled;
+        };
+
+        $scope.switchToOW = function() {
+            $rootScope.selectedGame = "OW";
+            $scope.lolChosen = false;
+            $scope.owChosen = true;
+        }
+
+        $scope.switchToLOL = function() {
+            $rootScope.selectedGame = "LOL";
+            $scope.lolChosen = true;
+            $scope.owChosen = false;
+        }
+    });

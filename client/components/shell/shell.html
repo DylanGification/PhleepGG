@@ -12,14 +12,14 @@
         <md-content layout-padding>
             <md-menu-content width="4">
                 <md-menu-divider></md-menu-divider>
-                <md-menu-item md-colors="::{backgroundColor: 'default-warn-500'}">
-                    <md-button ng-click="switchToOW()">
+                <md-menu-item>
+                    <md-button ng-click="switchToOW();" class="md-warn" ng-disabled="owChosen">
                         <md-icon md-svg-icon="image:blur_linear"></md-icon>
                         Overwatch
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                    <md-button ng-click="switchToLOL()">
+                    <md-button ng-click="switchToLOL();" class="md-primary" ng-disabled="lolChosen">
                         <md-icon md-svg-icon="image:blur_linear"></md-icon>
                         League of Legends
                     </md-button>
