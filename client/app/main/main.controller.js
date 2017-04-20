@@ -41,7 +41,7 @@ angular.module('phleepApp')
         var unrankedMatch = [];
         var leagueStats = [];
         var profileStats = [];
-        $scope.hideStats = false;
+        $scope.hideStats = true;
         var userID;
         var num = 0;
 

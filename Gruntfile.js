@@ -48,11 +48,11 @@ module.exports = function (grunt) {
         }
       }
     },
-    open: {
-      server: {
-        url: 'http://localhost:<%= express.options.port %>'
-      }
-    },
+    // open: {
+    //   server: {
+    //     url: 'http://localhost:<%= express.options.port %>'
+    //   }
+    // },
     watch: {
       injectJS: {
         files: [
@@ -201,11 +201,11 @@ module.exports = function (grunt) {
             });
 
             // opens browser on initial server start
-            nodemon.on('config:update', function () {
-              setTimeout(function () {
-                require('open')('http://localhost:8080/debug?port=5858');
-              }, 500);
-            });
+            // nodemon.on('config:update', function () {
+            //   setTimeout(function () {
+            //     require('open')('http://localhost:8080/debug?port=5858');
+            //   }, 500);
+            // });
           }
         }
       }
@@ -528,7 +528,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
+      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'express-keepalive']);
     }
 
     if (target === 'debug') {
@@ -552,7 +552,6 @@ module.exports = function (grunt) {
       'autoprefixer',
       'express:dev',
       'wait',
-      'open',
       'watch'
     ]);
   });
