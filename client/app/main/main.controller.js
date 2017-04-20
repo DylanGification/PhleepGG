@@ -2,10 +2,10 @@
 angular.module('phleepApp')
     .controller('MainCtrl', function($scope, $http, socket) {
 
-        $http.get('/api/overwatchs').success(function(awesomeThings) {
-            $scope.awesomeThings = awesomeThings;
-            socket.syncUpdates('overwatch', $scope.awesomeThings);
-        });
+        // $http.get('/api/overwatchs').success(function(awesomeThings) {
+        //     $scope.awesomeThings = awesomeThings;
+        //     socket.syncUpdates('overwatch', $scope.awesomeThings);
+        // });
 
         $scope.deleteThing = function(overwatch) {
             $http.delete('/api/overwatchs/' + overwatch._id);
