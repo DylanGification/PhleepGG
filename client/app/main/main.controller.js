@@ -41,7 +41,8 @@ angular.module('phleepApp')
         var unrankedMatch = [];
         var leagueStats = [];
         var profileStats = [];
-        $scope.hideStats = false;
+        $scope.hideStats = true;
+        $scope.hideLoader = true;
         var userID;
         var num = 0;
 
@@ -253,6 +254,7 @@ angular.module('phleepApp')
         }
 
         $scope.getMyData = function() {
+            $scope.hideLoader = false;
             var myUserName = $scope.myUserInput.replace("#", "-");
             var myRegion = $scope.myRegion;
             var myPlatform = $scope.myPlatform;
@@ -625,5 +627,6 @@ angular.module('phleepApp')
             } else if (myTier == "grandmaster") {
                 $scope.tierImage = "https://blzgdapipro-a.akamaihd.net/game/rank-icons/season-2/rank-7.png";
             }
+            $scope.hideLoader = true;
         }
     });

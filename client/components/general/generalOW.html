@@ -23,6 +23,17 @@
                 </form>
             </md-card>
         </div>
+        <div class="loader" ng-hide="hideLoader">
+            <ul class="hexagon-container">
+                <li class="hexagon hex_1"></li>
+                <li class="hexagon hex_2"></li>
+                <li class="hexagon hex_3"></li>
+                <li class="hexagon hex_4"></li>
+                <li class="hexagon hex_5"></li>
+                <li class="hexagon hex_6"></li>
+                <li class="hexagon hex_7"></li>
+            </ul>
+        </div>
         <div flex class="owfont" ng-hide="hideStats">
             <md-card>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
@@ -52,6 +63,17 @@
             </md-card>
         </div>
     </div>
+    <div class="loader" ng-hide="hideLoader">
+            <ul class="hexagon-container">
+                <li class="hexagon hex_1"></li>
+                <li class="hexagon hex_2"></li>
+                <li class="hexagon hex_3"></li>
+                <li class="hexagon hex_4"></li>
+                <li class="hexagon hex_5"></li>
+                <li class="hexagon hex_6"></li>
+                <li class="hexagon hex_7"></li>
+            </ul>
+        </div>
     <br>
     <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
         <md-card flex>
@@ -69,7 +91,7 @@
                                     <span class="md-headline">Damage</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Melee Final Blows: {{myCompWins}}</h2>
                                 <h2>Solo Kills: {{myWinRate}}</h2>
                                 <h2>Objective Kills: {{myCompPlaytime}}</h2>
@@ -88,7 +110,7 @@
                                     <span class="md-headline">Assists</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Healing Done: {{myCompWins}}</h2>
                                 <h2>Recon Assists: {{myWinRate}}</h2>
                                 <h2>Offensive Assists: {{myCompWins}}</h2>
@@ -103,7 +125,7 @@
                                     <span class="md-headline">Best/Most in Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Eliminations: {{myCompWins}}</h2>
                                 <h2>Final Blows: {{myWinRate}}</h2>
                                 <h2>Damage Done: {{myCompPlaytime}} </h2>
@@ -118,7 +140,6 @@
                                 <h2>Time Spent On Fire: {{myWinRate}} hours</h2>
                                 <h2>Melee Final Blows: {{myWinRate}}</h2>
                                 <h2>Kill Streak: {{myWinRate}}</h2>
-                                
                             </md-content>
                         </md-card>
                     </div>
@@ -129,7 +150,7 @@
                                     <span class="md-headline">Deaths</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Deaths: {{myCompWins}}</h2>
                                 <h2>Environmental Deaths: {{myWinRate}}</h2>
                             </md-content>
@@ -142,7 +163,7 @@
                                     <span class="md-headline">Average</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Melee Final Blows: {{myCompWins}}</h2>
                                 <h2>Time Spent On Fire: {{myWinRate}} hours</h2>
                                 <h2>Solo Kills: {{myCompWins}}</h2>
@@ -163,7 +184,7 @@
                                     <span class="md-headline">Match Awards</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Cards: {{myCompWins}}</h2>
                                 <h2>Medals: {{myWinRate}} hours</h2>
                                 <h2>Gold Medals: {{myCompWins}}</h2>
@@ -179,12 +200,12 @@
                                     <span class="md-headline">Misceallaneous</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Shield Generators Destroyed: {{myCompWins}}</h2>
                                 <h2>Turrets Destroyed: {{myWinRate}} hours</h2>
                                 <h2>Teleporters Destroyed: {{myCompPlaytime}}</h2>
                                 <h1>Most in Game</h1>
-                                <h2>Recon Assists: {{myWinRate}}</h2>                                
+                                <h2>Recon Assists: {{myWinRate}}</h2>
                                 <h2>Shield Generator Destroyed: {{myWinRate}}</h2>
                                 <h2>Turrets Destroyed: {{myWinRate}}</h2>
                                 <h2>Environmental Kills: {{myWinRate}}</h2>
@@ -199,7 +220,7 @@
                                     <span class="md-headline">Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content>
+                            <md-content class="fix-me">
                                 <h2>Games Played: {{myCompWins}}</h2>
                                 <h2>Games Won: {{myWinRate}} hours</h2>
                                 <h2>Games Tied: {{myCompPlaytime}}</h2>
