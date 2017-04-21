@@ -7,7 +7,7 @@
                         <span class="md-headline">Player Search</span>
                     </md-card-title-text>
                 </md-card-title>
-                <md-card-content style="height: 100%;" flex>
+                <md-content-card style="height: 100%;" flex>
                     <form ng-submit="getMyData()">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Platform</label>
@@ -27,7 +27,7 @@
                             <input type="text" ng-model="myUserInput">
                         </md-input-container class="md-block" flex-gt-sm>
                     </form>
-                </md-card-content>
+                </md-content-card>
             </md-card>
         </div>
         <div flex class="owfont" ng-hide="hideStats">
@@ -37,7 +37,7 @@
                         <span class="md-headline">{{myUsername}}</span>
                     </md-card-title-text>
                 </md-card-title>
-                <md-card-content layout="row" layout-xs="column">
+                <md-content-card layout="row" layout-xs="column">
                     <div class="md-media-xl card-media" flex-gt-sm>
                         <img ng-src="{{myAvatar}}">
                     </div>
@@ -55,7 +55,7 @@
                     <div class="md-media-md card-media" flex-gt-sm>
                         <img ng-src="{{tierImage}}">
                     </div>
-                </md-card-content>
+                </md-content-card>
             </md-card>
         </div>
     </div>
@@ -78,7 +78,7 @@
                     <span class="md-headline">Competitive Statistics</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content flex layout-align="space-between">
+            <md-content-card flex layout-align="space-between">
                 <div layout="row" layout-xs="column">
                     <div flex>
                         <md-card flex>
@@ -228,7 +228,7 @@
                         </md-card>
                     </div>
                 </div>
-            </md-card-content>
+            </md-content-card>
         </md-card>
     </div>
     <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
@@ -238,7 +238,7 @@
                     <span class="md-headline">Quick Play Statistics</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content flex layout-align="space-between">
+            <md-content-card flex layout-align="space-between">
                 <div layout="row" layout-xs="column">
                     <div flex>
                         <md-card flex>
@@ -388,7 +388,7 @@
                         </md-card>
                     </div>
                 </div>
-            </md-card-content>
+            </md-content-card>
         </md-card>
     </div>
 </div>
