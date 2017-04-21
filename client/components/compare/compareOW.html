@@ -1,54 +1,98 @@
-<div ng-controller="MainCtrl">
-<div layout="row" layout-sm="column">
-    <div flex>
-        <md-card>
-            <form ng-submit="getMyData();">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Platform</label>
-                    <md-select ng-model="myPlatform">
-                        <md-option ng-repeat="myPlatform in myPlatforms" value="{{myPlatform}}">{{myPlatform}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <br>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Region</label>
-                    <md-select ng-model="myRegion">
-                        <md-option ng-repeat="myRegion in myRegions" value="{{myRegion}}">{{myRegion}}</md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
-                    <input type="text" ng-model="myUserInput">
-                </md-input-container class="md-block" flex-gt-sm>
-            </form>
+<div ng-controller="MainCtrl" theme="compareTheme">
+    <div layout="row" layout-sm="column">
+        <md-content flex>
+            <md-card>
+                <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                    <md-card-title-text>
+                        <span class="md-headline">Player One</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <form ng-submit="getMyData();">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Platform</label>
+                        <md-select ng-model="myPlatform">
+                            <md-option ng-repeat="myPlatform in myPlatforms" value="{{myPlatform}}">{{myPlatform}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <br>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Region</label>
+                        <md-select ng-model="myRegion">
+                            <md-option ng-repeat="myRegion in myRegions" value="{{myRegion}}">{{myRegion}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
+                        <input type="text" ng-model="myUserInput">
+                    </md-input-container class="md-block" flex-gt-sm>
+                </form>
+            </md-card>
+        </md-content>
+        <md-content flex>
+            <md-card>
+                <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
+                    <md-card-title-text>
+                        <span class="md-headline">Player Two</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <form ng-submit="getOppData();">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Platform</label>
+                        <md-select ng-model="oppPlatform">
+                            <md-option ng-repeat="oppPlatform in oppPlatforms" value="{{oppPlatform}}">{{oppPlatform}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <br>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Region</label>
+                        <md-select ng-model="oppRegion">
+                            <md-option ng-repeat="oppRegion in oppRegions" value="{{oppRegion}}">{{oppRegion}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
+                        <input type="text" ng-model="oppUserInput">
+                    </md-input-container class="md-block" flex-gt-sm>
+                </form>
+            </md-card>
+        </md-content>
+    </div>
+    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                <md-card-title-text>
+                    <span class="md-headline">General - {{myUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2>Rank: {{myRank}}</h2>
+                <h2>Win Rate: {{myWinRate}}</h2>
+                <h2>Games: {{gamesComp}}</h2>
+                <h2>Wins: {{myCompWins}}</h2>
+                <h2>Ties: {{ties}}</h2>
+                <h2>Losses: {{lossesComp}}</h2>
+                <h2>Eliminations: {{totalElimsComp}}</h2>
+                <h2>Kills Per Death: {{kpdComp}}</h2>
+                <h2>Time Played: {{myCompPlaytime}} hours</h2>
+            </md-content-card>
+        </md-card>
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
+                <md-card-title-text>
+                    <span class="md-headline">General - {{oppUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2>Rank: {{oppRank}}</h2>
+                <h2>Win Rate: {{oppWinRate}}</h2>
+                <h2>Games: {{gamesCompOpp}}</h2>
+                <h2>Wins: {{oppCompWins}}</h2>
+                <h2>Ties: {{tiesOpp}}</h2>
+                <h2>Losses: {{lossesCompOpp}}</h2>
+                <h2>Eliminations: {{totalElimsCompOpp}}</h2>
+                <h2>Kills Per Death: {{kpdCompOpp}}</h2>
+                <h2>Time Played: {{oppCompPlaytime}} hours</h2>
+            </md-content-card>
         </md-card>
     </div>
-    <div flex>
-        <md-card>
-            <form ng-submit="getLOLData()">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Platform</label>
-                    <md-select ng-model="oppPlatform">
-                        <md-option ng-repeat="oppPlatform in oppPlatforms" value="{{oppPlatform}}">
-                            {{oppPlatform}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                <br>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Region</label>
-                    <md-select ng-model="oppRegion">
-                        <md-option ng-repeat="oppRegion in oppRegions" value="{{oppRegion}}">
-                            {{oppRegion}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Enter a Battletag, PSN ID or XBL Gamertag...</label>
-                    <input type="text" ng-model="oppUserInput" ng-submit="getOppData();">
-                </md-input-container>
-            </form>
-        </md-card>
-    </div>
-</div>
 </div>

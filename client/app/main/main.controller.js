@@ -1,11 +1,6 @@
 'use strict';
 angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socket, $rootScope) {
 
-    $scope.$on('$destroy', function() {
-        socket.unsyncUpdates('overwatch');
-    });
-
-
     // var apiURL = "http://ec2-34-252-173-0.eu-west-1.compute.amazonaws.com:4444";
     var apiURL = "https://owapi.net";
     var LOL_API_KEY = "api_key=690b6aa5-4f70-4eac-8d8c-808bd08ead0c";
@@ -20,7 +15,6 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     $scope.myLoLRegions = ["euw", "na", "kr", "ru", "eune", "oce", "tr", "jp", "br", "las"];
     $scope.oppLoLRegions = ["euw", "na", "kr", "ru", "eune", "oce", "tr", "jp", "br", "las"];
 
-
     //My details
     var myDetails = [];
     var myAchievements = [];
@@ -32,16 +26,21 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     var unrankedMatch = [];
     var leagueStats = [];
     var profileStats = [];
-    $scope.hideStats = false;
+    $scope.hideStats = true;
     $scope.hideLoader = true;
     var userID;
     var num = 0;
 
-    $scope.gatherData = function() {
+    //Comparison Details
+    var myCall = false;
+    var oppCall = false;
+    var comparison = false;
+
+    $scope.getOWData = function() {
         console.log("initial num " + num);
         $http({
             method: 'GET',
-            url: "http://127.0.0.1:8080/pc_t3.json",
+            url: "/data/pc_t3.json",
             type: 'json'
         }).then(function successCallback(response) {
             var tempmyDetails = response.data;
@@ -423,7 +422,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         console.log("Initial num: " + num);
         $http({
             method: 'GET',
-            url: "http://127.0.0.1:8080/leagueKR_t1.json",
+            url: "/data/leagueKR_t1.json",
             type: 'json'
         }).then(function successCallback(response) {
                 var tempmyDetails = response.data;
@@ -730,9 +729,354 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.onFireAvgQP = myDetails[myRegion].stats.quickplay.average_stats.time_spent_on_fire_avg;
         $scope.objKillsAvgQP = myDetails[myRegion].stats.quickplay.average_stats.objective_kills_avg;
 
+        myCall = true;
+        if (oppCall == true && myCall == true) {
+            compareDetails();
+            $scope.comparison = true;
+        }
+
         var myTier = $scope.myTier;
         getRankImage(myTier);
         $scope.myUserInput = '';
+        $scope.hideStats = false;
+    }
+
+    $scope.getOppData = function() {
+        $scope.hideLoader = false;
+        var oppUserName = $scope.oppUserInput.replace("#", "-");
+        var oppRegion = $scope.oppRegion.toLowerCase();
+        var oppPlatform = $scope.oppPlatform.toLowerCase();
+        $http({
+            method: 'GET',
+            url: apiURL + "/api/v3/u/" + oppUserName + "/blob" + "?platform=" + oppPlatform,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function successCallback(response) {
+            oppDetails = response.data;
+            $http.post('/api/overwatchs', {
+                name: oppUserName,
+                level: oppDetails[oppRegion].stats.quickplay.overall_stats.level,
+                prestige: oppDetails[oppRegion].stats.competitive.overall_stats.prestige,
+                rank: oppDetails[oppRegion].stats.competitive.overall_stats.comprank,
+                avatar: oppDetails[oppRegion].stats.competitive.overall_stats.avatar,
+                qp: {
+                    total: {
+                        objKills: oppDetails[oppRegion].stats.quickplay.game_stats.objective_kills,
+                        rate: oppDetails[oppRegion].stats.quickplay.overall_stats.win_rate,
+                        games: oppDetails[oppRegion].stats.quickplay.overall_stats.games,
+                        wins: oppDetails[oppRegion].stats.quickplay.overall_stats.wins,
+                        loss: oppDetails[oppRegion].stats.quickplay.overall_stats.losses,
+                        healing: oppDetails[oppRegion].stats.quickplay.game_stats.healing_done,
+                        offAssists: oppDetails[oppRegion].stats.quickplay.game_stats.offensive_assists,
+                        defAssists: oppDetails[oppRegion].stats.quickplay.game_stats.defensive_assists,
+                        recAssists: oppDetails[oppRegion].stats.quickplay.game_stats.recon_assists,
+                        teleDestroyed: oppDetails[oppRegion].stats.quickplay.game_stats.teleporter_pads_destroyed,
+                        objTime: oppDetails[oppRegion].stats.quickplay.game_stats.objective_time,
+                        melee: oppDetails[oppRegion].stats.quickplay.game_stats.melee_final_blows,
+                        medals: oppDetails[oppRegion].stats.quickplay.game_stats.medals,
+                        cards: oppDetails[oppRegion].stats.quickplay.game_stats.cards,
+                        multikillBest: oppDetails[oppRegion].stats.quickplay.game_stats.multikill_best,
+                        multikills: oppDetails[oppRegion].stats.quickplay.game_stats.multikills,
+                        damageDone: oppDetails[oppRegion].stats.quickplay.game_stats.damage_done,
+                        bronze: oppDetails[oppRegion].stats.quickplay.game_stats.medals_bronze,
+                        silver: oppDetails[oppRegion].stats.quickplay.game_stats.medals_silver,
+                        gold: oppDetails[oppRegion].stats.quickplay.game_stats.medals_gold,
+                        envKills: oppDetails[oppRegion].stats.quickplay.game_stats.environmental_kills,
+                        soloKills: oppDetails[oppRegion].stats.quickplay.game_stats.solo_kills,
+                        onFire: oppDetails[oppRegion].stats.quickplay.game_stats.time_spent_on_fire,
+                        finalBlows: oppDetails[oppRegion].stats.quickplay.game_stats.final_blows,
+                        timePlayed: oppDetails[oppRegion].stats.quickplay.game_stats.time_played,
+                        envDeaths: oppDetails[oppRegion].stats.quickplay.game_stats.environmental_deaths,
+                        kpd: oppDetails[oppRegion].stats.quickplay.game_stats.kpd,
+                        elims: oppDetails[oppRegion].stats.quickplay.game_stats.eliminations,
+                        deaths: oppDetails[oppRegion].stats.quickplay.game_stats.deaths
+                    },
+                    most: {
+                        objKills: oppDetails[oppRegion].stats.quickplay.game_stats.objective_kills_most_in_game,
+                        melee: oppDetails[oppRegion].stats.quickplay.game_stats.melee_final_blows_most_in_game,
+                        onFire: oppDetails[oppRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game,
+                        finalBlows: oppDetails[oppRegion].stats.quickplay.game_stats.final_blows_most_in_game,
+                        defAssists: oppDetails[oppRegion].stats.quickplay.game_stats.defensive_assists_most_in_game,
+                        offAssists: oppDetails[oppRegion].stats.quickplay.game_stats.offensive_assists_most_in_game,
+                        healing: oppDetails[oppRegion].stats.quickplay.game_stats.healing_done_most_in_game,
+                        elims: oppDetails[oppRegion].stats.quickplay.game_stats.eliminations_most_in_game,
+                        soloKills: oppDetails[oppRegion].stats.quickplay.game_stats.solo_kills_most_in_game,
+                        damageDone: oppDetails[oppRegion].stats.quickplay.game_stats.damage_done_most_in_game,
+                        objTime: oppDetails[oppRegion].stats.quickplay.game_stats.objective_time_most_in_game
+                    },
+                    average: {
+                        healing: oppDetails[oppRegion].stats.quickplay.average_stats.healing_done_avg,
+                        elims: oppDetails[oppRegion].stats.quickplay.average_stats.eliminations_avg,
+                        melee: oppDetails[oppRegion].stats.quickplay.average_stats.melee_final_blows_avg,
+                        finalBlows: oppDetails[oppRegion].stats.quickplay.average_stats.final_blows_avg,
+                        offAssists: oppDetails[oppRegion].stats.quickplay.average_stats.offensive_assists_avg,
+                        defAssists: oppDetails[oppRegion].stats.quickplay.average_stats.defensive_assists_avg,
+                        damageDone: oppDetails[oppRegion].stats.quickplay.average_stats.damage_done_avg,
+                        deaths: oppDetails[oppRegion].stats.quickplay.average_stats.deaths_avg,
+                        objTime: oppDetails[oppRegion].stats.quickplay.average_stats.objective_time_avg,
+                        soloKills: oppDetails[oppRegion].stats.quickplay.average_stats.solo_kills_avg,
+                        onFire: oppDetails[oppRegion].stats.quickplay.average_stats.time_spent_on_fire_avg,
+                        objKills: oppDetails[oppRegion].stats.quickplay.average_stats.objective_kills_avg
+                    }
+                },
+                comp: {
+                    total: {
+                        rate: oppDetails[oppRegion].stats.competitive.overall_stats.win_rate,
+                        games: oppDetails[oppRegion].stats.competitive.overall_stats.games,
+                        wins: oppDetails[oppRegion].stats.competitive.overall_stats.wins,
+                        loss: oppDetails[oppRegion].stats.competitive.overall_stats.losses,
+                        objKills: oppDetails[oppRegion].stats.competitive.game_stats.objective_kills,
+                        healing: oppDetails[oppRegion].stats.competitive.game_stats.healing_done,
+                        offAssists: oppDetails[oppRegion].stats.competitive.game_stats.offensive_assists,
+                        defAssists: oppDetails[oppRegion].stats.competitive.game_stats.defensive_assists,
+                        recAssists: oppDetails[oppRegion].stats.competitive.game_stats.recon_assists,
+                        teleDestroyed: oppDetails[oppRegion].stats.competitive.game_stats.teleporter_pads_destroyed,
+                        objTime: oppDetails[oppRegion].stats.competitive.game_stats.objective_time,
+                        melee: oppDetails[oppRegion].stats.competitive.game_stats.melee_final_blows,
+                        medals: oppDetails[oppRegion].stats.competitive.game_stats.medals,
+                        cards: oppDetails[oppRegion].stats.competitive.game_stats.cards,
+                        multikillBest: oppDetails[oppRegion].stats.competitive.game_stats.multikill_best,
+                        multikills: oppDetails[oppRegion].stats.competitive.game_stats.multikills,
+                        damageDone: oppDetails[oppRegion].stats.competitive.game_stats.damage_done,
+                        bronze: oppDetails[oppRegion].stats.competitive.game_stats.medals_bronze,
+                        silver: oppDetails[oppRegion].stats.competitive.game_stats.medals_silver,
+                        gold: oppDetails[oppRegion].stats.competitive.game_stats.medals_gold,
+                        envKills: oppDetails[oppRegion].stats.competitive.game_stats.environmental_kills,
+                        soloKills: oppDetails[oppRegion].stats.competitive.game_stats.solo_kills,
+                        onFire: oppDetails[oppRegion].stats.competitive.game_stats.time_spent_on_fire,
+                        finalBlows: oppDetails[oppRegion].stats.competitive.game_stats.final_blows,
+                        timePlayed: oppDetails[oppRegion].stats.competitive.game_stats.time_played,
+                        envDeaths: oppDetails[oppRegion].stats.competitive.game_stats.environmental_deaths,
+                        kpd: oppDetails[oppRegion].stats.competitive.game_stats.kpd,
+                        elims: oppDetails[oppRegion].stats.competitive.game_stats.eliminations,
+                        deaths: oppDetails[oppRegion].stats.competitive.game_stats.deaths
+                    },
+                    most: {
+                        objKills: oppDetails[oppRegion].stats.competitive.game_stats.objective_kills_most_in_game,
+                        melee: oppDetails[oppRegion].stats.competitive.game_stats.melee_final_blows_most_in_game,
+                        onFire: oppDetails[oppRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game,
+                        finalBlows: oppDetails[oppRegion].stats.competitive.game_stats.final_blows_most_in_game,
+                        defAssists: oppDetails[oppRegion].stats.competitive.game_stats.defensive_assists_most_in_game,
+                        offAssists: oppDetails[oppRegion].stats.competitive.game_stats.offensive_assists_most_in_game,
+                        healing: oppDetails[oppRegion].stats.competitive.game_stats.healing_done_most_in_game,
+                        elims: oppDetails[oppRegion].stats.competitive.game_stats.eliminations_most_in_game,
+                        soloKills: oppDetails[oppRegion].stats.competitive.game_stats.solo_kills_most_in_game,
+                        damageDone: oppDetails[oppRegion].stats.competitive.game_stats.damage_done_most_in_game,
+                        objTime: oppDetails[oppRegion].stats.competitive.game_stats.objective_time_most_in_game
+                    },
+                    average: {
+                        healing: oppDetails[oppRegion].stats.competitive.average_stats.healing_done_avg,
+                        elims: oppDetails[oppRegion].stats.competitive.average_stats.eliminations_avg,
+                        melee: oppDetails[oppRegion].stats.competitive.average_stats.melee_final_blows_avg,
+                        finalBlows: oppDetails[oppRegion].stats.competitive.average_stats.final_blows_avg,
+                        offAssists: oppDetails[oppRegion].stats.competitive.average_stats.offensive_assists_avg,
+                        defAssists: oppDetails[oppRegion].stats.competitive.average_stats.defensive_assists_avg,
+                        damageDone: oppDetails[oppRegion].stats.competitive.average_stats.damage_done_avg,
+                        deaths: oppDetails[oppRegion].stats.competitive.average_stats.deaths_avg,
+                        objTime: oppDetails[oppRegion].stats.competitive.average_stats.objective_time_avg,
+                        soloKills: oppDetails[oppRegion].stats.competitive.average_stats.solo_kills_avg,
+                        onFire: oppDetails[oppRegion].stats.competitive.average_stats.time_spent_on_fire_avg,
+                        objKills: oppDetails[oppRegion].stats.competitive.average_stats.objective_kills_avg
+                    }
+                },
+                heroes: {
+                    playtime: {
+                        ana: oppDetails[oppRegion].heroes.playtime.competitive.ana + oppDetails[oppRegion].heroes.playtime.quickplay.ana,
+                        bastion: oppDetails[oppRegion].heroes.playtime.competitive.bastion + oppDetails[oppRegion].heroes.playtime.quickplay.bastion,
+                        dva: oppDetails[oppRegion].heroes.playtime.competitive.dva + oppDetails[oppRegion].heroes.playtime.quickplay.dva,
+                        genji: oppDetails[oppRegion].heroes.playtime.competitive.genji + oppDetails[oppRegion].heroes.playtime.quickplay.genji,
+                        hanzo: oppDetails[oppRegion].heroes.playtime.competitive.hanzo + oppDetails[oppRegion].heroes.playtime.quickplay.hanzo,
+                        junkrat: oppDetails[oppRegion].heroes.playtime.competitive.junkrat + oppDetails[oppRegion].heroes.playtime.quickplay.junkrat,
+                        lucio: oppDetails[oppRegion].heroes.playtime.competitive.lucio + oppDetails[oppRegion].heroes.playtime.quickplay.lucio,
+                        mccree: oppDetails[oppRegion].heroes.playtime.competitive.mccree + oppDetails[oppRegion].heroes.playtime.quickplay.mccree,
+                        mei: oppDetails[oppRegion].heroes.playtime.competitive.mei + oppDetails[oppRegion].heroes.playtime.quickplay.mei,
+                        mercy: oppDetails[oppRegion].heroes.playtime.competitive.mercy + oppDetails[oppRegion].heroes.playtime.quickplay.mercy,
+                        orisa: oppDetails[oppRegion].heroes.playtime.competitive.orisa + oppDetails[oppRegion].heroes.playtime.quickplay.orisa,
+                        pharah: oppDetails[oppRegion].heroes.playtime.competitive.pharah + oppDetails[oppRegion].heroes.playtime.quickplay.pharah,
+                        reaper: oppDetails[oppRegion].heroes.playtime.competitive.reaper + oppDetails[oppRegion].heroes.playtime.quickplay.reaper,
+                        reinhardt: oppDetails[oppRegion].heroes.playtime.competitive.reinhardt + oppDetails[oppRegion].heroes.playtime.quickplay.reinhardt,
+                        roadhog: oppDetails[oppRegion].heroes.playtime.competitive.roadhog + oppDetails[oppRegion].heroes.playtime.quickplay.roadhog,
+                        soldier76: oppDetails[oppRegion].heroes.playtime.competitive.soldier76 + oppDetails[oppRegion].heroes.playtime.quickplay.soldier76,
+                        sombra: oppDetails[oppRegion].heroes.playtime.competitive.sombra + oppDetails[oppRegion].heroes.playtime.quickplay.sombra,
+                        symmetra: oppDetails[oppRegion].heroes.playtime.competitive.symmetra + oppDetails[oppRegion].heroes.playtime.quickplay.symmetra,
+                        torbjorn: oppDetails[oppRegion].heroes.playtime.competitive.torbjorn + oppDetails[oppRegion].heroes.playtime.quickplay.torbjorn,
+                        tracer: oppDetails[oppRegion].heroes.playtime.competitive.tracer + oppDetails[oppRegion].heroes.playtime.quickplay.tracer,
+                        widowmaker: oppDetails[oppRegion].heroes.playtime.competitive.widowmaker + oppDetails[oppRegion].heroes.playtime.quickplay.widowmaker,
+                        winston: oppDetails[oppRegion].heroes.playtime.competitive.winston + oppDetails[oppRegion].heroes.playtime.quickplay.winston,
+                        zarya: oppDetails[oppRegion].heroes.playtime.competitive.zarya + oppDetails[oppRegion].heroes.playtime.quickplay.zarya,
+                        zenyatta: oppDetails[oppRegion].heroes.playtime.competitive.zenyatta + oppDetails[oppRegion].heroes.playtime.quickplay.zenyatta
+                    }
+                }
+            });
+            getOppDetails(oppDetails);
+            console.log("Added " + oppUserName + " to MongoDB");
+        }, function errorCallback(response) {
+            console.log(response.error);
+        });
+    }
+
+
+    function getOppDetails(oppDetails) {
+        var oppRegion = $scope.oppRegion.toLowerCase();
+        var oppPlatform = $scope.oppPlatform.toLowerCase();
+        var oppUserName = $scope.oppUserInput.replace("#", "-");
+        //GENERAL STATS
+        $scope.oppAvatar = oppDetails[oppRegion].stats.competitive.overall_stats.avatar;
+        if (oppPlatform == "pc") {
+            $scope.oppUsername = oppUserName.substring(0, oppUserName.indexOf('-'));
+        } else {
+            $scope.oppUsername = oppUserName;
+        }
+        $scope.oppLevel = oppDetails[oppRegion].stats.quickplay.overall_stats.level;
+        $scope.oppRank = oppDetails[oppRegion].stats.competitive.overall_stats.comprank;
+        $scope.oppWinRate = oppDetails[oppRegion].stats.competitive.overall_stats.win_rate;
+        $scope.oppCompWins = oppDetails[oppRegion].stats.competitive.overall_stats.wins;
+        $scope.oppCompPlaytime = oppDetails[oppRegion].stats.competitive.game_stats.time_played
+        $scope.oppPrestige = oppDetails[oppRegion].stats.competitive.overall_stats.prestige;
+        $scope.oppTier = oppDetails[oppRegion].stats.competitive.overall_stats.tier;
+        $scope.tiesOpp = oppDetails[oppRegion].stats.competitive.overall_stats.ties;
+
+        //COMPETITIVE
+
+        //OVERALL GAME STATS
+        $scope.gamesCompOpp = oppDetails[oppRegion].stats.competitive.overall_stats.games;
+        $scope.lossesCompOpp = oppDetails[oppRegion].stats.competitive.overall_stats.losses;
+        $scope.totalObjKillsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.objective_kills;
+        $scope.totalHealingCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.healing_done;
+        $scope.totalOffAssistsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.offensive_assists;
+        $scope.totalDefAssistsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.defensive_assists;
+        $scope.totalRecAssistsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.recon_assists;
+        $scope.totalTeleDestroyedCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.teleporter_pads_destroyed;
+        $scope.totalObjTimeCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.objective_time;
+        $scope.totalMeleeCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.melee_final_blows;
+        $scope.totalMedalsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.medals;
+        $scope.totalCardsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.cards;
+        $scope.totalElimsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.eliminations;
+        $scope.totalDeathsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.deaths;
+        $scope.totalMultikillsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.multikills;
+        $scope.totalDamageDoneCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.damage_done;
+        $scope.totalBronzeCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.medals_bronze;
+        $scope.totalSilverCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.medals_silver;
+        $scope.totalGoldCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.medals_gold;
+        $scope.totalEnvKillsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.environmental_kills;
+        $scope.totalSoloKillsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.solo_kills;
+        $scope.totalOnFireCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.time_spent_on_fire;
+        $scope.totalFinalBlowsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.final_blows;
+        $scope.totalTimePlayedCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.time_played;
+        $scope.totalEnvDeathsCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.environmental_deaths;
+        $scope.kpdCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.kpd;
+        $scope.shieldGensDestroyedCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.shield_generators_destroyed;
+        $scope.shieldGensDestroyedCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.turrets_destroyed;
+
+        //BEST/MOST IN GAME
+        $scope.multikillBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.multikill_best;
+        $scope.objKillsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.objective_kills_most_in_game;
+        $scope.meleeBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.melee_final_blows_most_in_game;
+        $scope.onFireBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game;
+        $scope.finalBlowsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.final_blows_most_in_game;
+        $scope.defAssistsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.defensive_assists_most_in_game;
+        $scope.offAssistsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.offensive_assists_most_in_game;
+        $scope.healingBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.healing_done_most_in_game;
+        $scope.elimsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.eliminations_most_in_game;
+        $scope.soloKillsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.solo_kills_most_in_game;
+        $scope.damageDoneBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.damage_done_most_in_game;
+        $scope.objTimeBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.objective_time_most_in_game;
+        $scope.bestKillStreakCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.kill_streak_best;
+        $scope.recAssistsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.recon_assists_most_in_game;
+        $scope.shieldGensDestroyedBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.shield_generator_destroyed_most_in_game;
+        $scope.turretsDestroyedBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.turrets_destroyed_most_in_game;
+        $scope.envKillsBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.environmental_kills_most_in_game;
+        $scope.teleDestroyedBestCompOpp = oppDetails[oppRegion].stats.competitive.game_stats.teleporter_pad_destroyed_most_in_game;
+
+        //AVERAGE STATS
+        $scope.healingAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.healing_done_avg;
+        $scope.elimsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.eliminations_avg;
+        $scope.meleeAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.melee_final_blows_avg;
+        $scope.finalBlowsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.final_blows_avg;
+        $scope.offAssistsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.offensive_assists_avg;
+        $scope.defAssistsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.defensive_assists_avg;
+        $scope.damageDoneAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.damage_done_avg;
+        $scope.deathsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.deaths_avg;
+        $scope.objTimeAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.objective_time_avg;
+        $scope.soloKillsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.solo_kills_avg;
+        $scope.onFireAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.time_spent_on_fire_avg;
+        $scope.objKillsAvgCompOpp = oppDetails[oppRegion].stats.competitive.average_stats.objective_kills_avg;
+
+
+        //QUICKPLAY
+        $scope.gamesQPOpp = oppDetails[oppRegion].stats.quickplay.overall_stats.games;
+        $scope.lossesQPOpp = oppDetails[oppRegion].stats.quickplay.overall_stats.losses;
+        $scope.totalObjKillsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.objective_kills;
+        $scope.totalHealingQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.healing_done;
+        $scope.totalOffAssistsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.offensive_assists;
+        $scope.totalDefAssistsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.defensive_assists;
+        $scope.totalRecAssistsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.recon_assists;
+        $scope.totalTeleDestroyedQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.teleporter_pads_destroyed;
+        $scope.totalObjTimeQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.objective_time;
+        $scope.totalMeleeQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.melee_final_blows;
+        $scope.totalMedalsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.medals;
+        $scope.totalCardsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.cards;
+        $scope.totalElimsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.eliminations;
+        $scope.totalDeathsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.deaths;
+        $scope.totalMultikillsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.multikills;
+        $scope.totalDamageDoneQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.damage_done;
+        $scope.totalBronzeQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.medals_bronze;
+        $scope.totalSilverQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.medals_silver;
+        $scope.totalGoldQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.medals_gold;
+        $scope.totalEnvKillsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.environmental_kills;
+        $scope.totalSoloKillsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.solo_kills;
+        $scope.totalOnFireQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.time_spent_on_fire;
+        $scope.totalFinalBlowsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.final_blows;
+        $scope.totalTimePlayedQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.time_played;
+        $scope.totalEnvDeathsQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.environmental_deaths;
+        $scope.kpdQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.kpd;
+        $scope.shieldGensDestroyedQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.shield_generators_destroyed;
+        $scope.shieldGensDestroyedQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.turrets_destroyed;
+        $scope.playtimeQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.time_played;
+
+        //BEST/MOST IN GAME
+        $scope.multikillBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.multikill_best;
+        $scope.objKillsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.objective_kills_most_in_game;
+        $scope.meleeBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.melee_final_blows_most_in_game;
+        $scope.onFireBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game;
+        $scope.finalBlowsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.final_blows_most_in_game;
+        $scope.defAssistsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.defensive_assists_most_in_game;
+        $scope.offAssistsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.offensive_assists_most_in_game;
+        $scope.healingBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.healing_done_most_in_game;
+        $scope.elimsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.eliminations_most_in_game;
+        $scope.soloKillsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.solo_kills_most_in_game;
+        $scope.damageDoneBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.damage_done_most_in_game;
+        $scope.objTimeBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.objective_time_most_in_game;
+        $scope.bestKillStreakQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.kill_streak_best;
+        $scope.recAssistsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.recon_assists_most_in_game;
+        $scope.shieldGensDestroyedBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.shield_generator_destroyed_most_in_game;
+        $scope.turretsDestroyedBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.turrets_destroyed_most_in_game;
+        $scope.envKillsBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.environmental_kills_most_in_game;
+        $scope.teleDestroyedBestQPOpp = oppDetails[oppRegion].stats.quickplay.game_stats.teleporter_pad_destroyed_most_in_game;
+
+        //AVERAGE STATS
+        $scope.healingAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.healing_done_avg;
+        $scope.elimsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.eliminations_avg;
+        $scope.meleeAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.melee_final_blows_avg;
+        $scope.finalBlowsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.final_blows_avg;
+        $scope.offAssistsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.offensive_assists_avg;
+        $scope.defAssistsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.defensive_assists_avg;
+        $scope.damageDoneAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.damage_done_avg;
+        $scope.deathsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.deaths_avg;
+        $scope.objTimeAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.objective_time_avg;
+        $scope.soloKillsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.solo_kills_avg;
+        $scope.onFireAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.time_spent_on_fire_avg;
+        $scope.objKillsAvgQPOpp = oppDetails[oppRegion].stats.quickplay.average_stats.objective_kills_avg;
+
+        oppCall = true;
+        if (oppCall == true && myCall == true) {
+            compareDetails();
+            $scope.comparison = true;
+        }
+        // var oppTier = $scope.oppTier;
+        // getRankImage(oppTier);
+        $scope.oppUserInput = '';
         $scope.hideStats = false;
     }
 
@@ -754,4 +1098,62 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         }
         $scope.hideLoader = true;
     }
-});
+
+    function compareDetails() {
+        calculateStatsIntPos($scope.myRank, $scope.oppRank);
+        calculateStatsFloatPos($scope.myWinRate, $scope.oppWinRate);
+        calculateStatsIntPos($scope.gamesComp, $scope.gamesCompOpp);
+        calculateStatsIntPos($scope.myCompWins, $scope.oppCompWins);
+        calculateStatsIntNeg($scope.ties, $scope.tiesOpp);
+        calculateStatsIntNeg($scope.lossesComp, $scope.lossesCompOpp);
+        calculateStatsIntPos($scope.totalElimsComp, $scope.totalElimsCompOpp);
+        calculateStatsFloatPos($scope.kpdComp, $scope.kpdCompOpp);
+        calculateStatsFloatNeg($scope.myCompPlaytime, $scope.oppCompPlaytime);
+    }
+
+    function calculateStatsIntPos(myStat, oppStat) {
+        if ((parseInt(myStat) - parseInt(oppStat)) > 0) {
+            console.log(myStat);
+        } else if ((parseInt(myStat) - parseInt(oppStat)) < 0) {
+            console.log(oppStat);
+        } else if ((parseInt(myStat) - parseInt(oppStat)) == 0) {
+            console.log(myStat, oppStat);
+        }
+    }
+    function calculateStatsIntNeg(myStat, oppStat) {
+        if ((parseInt(myStat) - parseInt(oppStat)) > 0) {
+            console.log(oppStat);
+        } else if ((parseInt(myStat) - parseInt(oppStat)) < 0) {
+            console.log(myStat);
+        } else if ((parseInt(myStat) - parseInt(oppStat)) == 0) {
+            console.log(myStat, oppStat);
+        }
+    }
+
+    function calculateStatsFloatPos(myStat, oppStat) {
+        if ((parseFloat(myStat) - parseFloat(oppStat)) > 0) {
+            console.log(myStat);
+        } else if ((parseFloat(myStat) - parseFloat(oppStat)) < 0) {
+            console.log(oppStat);
+        } else if ((parseFloat(myStat) - parseFloat(oppStat)) == 0) {
+            console.log(myStat, oppStat);
+        }
+    }
+
+    function calculateStatsFloatNeg(myStat, oppStat) {
+        if ((parseFloat(myStat) - parseFloat(oppStat)) > 0) {
+            console.log(oppStat);
+        } else if ((parseFloat(myStat) - parseFloat(oppStat)) < 0) {
+            console.log(myStat);
+        } else if ((parseFloat(myStat) - parseFloat(oppStat)) == 0) {
+            console.log(myStat, oppStat);
+        }
+    }
+
+
+}).config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('compareTheme')
+        .primaryPalette('cyan')
+        .accentPalette('amber')
+        .warnPalette('green');
+});;
