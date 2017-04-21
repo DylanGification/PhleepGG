@@ -27,8 +27,9 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     var rankedMatch = [];
     var unrankedMatch = [];
     var leagueStats = [];
-    var profileStats = [];
+    var profileDetails = [];
     $scope.hideStats = true;
+    $scope.hideLOLStats = false;
     $scope.hideCompare = false;
     $scope.hideLoader = true;
     $scope.hideLoaderCompare = true;
@@ -609,7 +610,6 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
                     }
                 }).then(function successCallback(response) {
                         var gameDetails = response.data;
-
                         gameDetails.playerStatSummaries.forEach(function(res) {
                             if (res.playerStatSummaryType == "RankedSolo5x5") {
                                 rankedMatch = res;
@@ -638,7 +638,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
                                         'Content-Type': 'application/json'
                                     }
                                 }).then(function successCallback(response) {
-                                    var profileDetails = response.data;
+                                    profileDetails = response.data;
                                     $http.post('/api/leagues', {
                                         name: myDetails.name,
                                         tier: profileDetails[userID]["0"].tier,
@@ -657,7 +657,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
                                             }
                                         },
                                         unranked5x5: {
-                                            wins: unrankedMatch.winston,
+                                            wins: unrankedMatch.wins,
                                             aggregatedStats: {
                                                 totalKills: unrankedMatch.aggregatedStats.totalChampionKills,
                                                 totalCS: unrankedMatch.aggregatedStats.totalMinionKills,
@@ -696,8 +696,10 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
                                             maxTimeSpentLiving: leagueStats.stats.maxTimeSpentLiving
                                         }
                                     });
+                                    $scope.getMyLOLDetails(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails);
+                                    console.log("Added " + myUserName + " to MongoDB");
                                 });
-                                console.log("Added " + myUserName + " to MongoDB");
+
                             },
                             function errorCallback(response) {
                                 console.log(response.error);
@@ -713,6 +715,18 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
             });
     }
 
+    $scope.getMyLOLDetails = function(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails) {
+        $scope.myLOLUserName = $scope.myLOLUserInput;
+        $scope.mySummonerID = myDetails.id;
+        var userID = $scope.mySummonerID;
+        $scope.myLOLRank = profileDetails[userID]["0"].tier + " " + profileDetails[userID]["0"].entries["0"].division + " " + profileDetails[userID]["0"].entries["0"].leaguePoints;
+        $scope.myLOLRankedWins = rankedMatch.wins;
+        $scope.myLOLWinRate = (rankedMatch.wins / (rankedMatch.wins + rankedMatch.losses)) * 100 +"%";
+        $scope.unrankedKills = unrankedMatch.aggregatedStats.totalKills;
+        $scope.unrankedCS = unrankedMatch.aggregatedStats.totalCS;
+        $scope.unrankedTurretKills = unrankedMatch.aggregatedStats.totalTurretKills;
+        $scope.unrankedNeutralMinions = unrankedMatch.aggregatedStats.totalNeutralMinionKills;
+    }
 
     function getMyDetails(myDetails) {
         var myRegion = $scope.myRegion.toLowerCase();

@@ -21,10 +21,8 @@
 
 @font-face {
     font-family: Beaufort For LOL;
-    src: url('/assets/fonts/beafortforlol-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('/assets/fonts/beafortforlol-bold.ttf') format('truetype'),
-    url('/assets/fonts/beafortforlol-bolditalic.ttf') format('truetype')
-    url('/assets/fonts/beafortforlol-italic.ttf') format('truetype');
+    src: url('/assets/fonts/beaufortforlol-regular.otf') format('truetype');
+    font-weight: bold;
 }
 
 

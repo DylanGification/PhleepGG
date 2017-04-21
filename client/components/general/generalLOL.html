@@ -23,26 +23,22 @@
                 </md-content-card>
             </md-card>
         </md-content>
-        <md-content flex class="lolfont" ng-hide="hideStats">
+        <md-content flex class="lolfont" ng-hide="hideLOLStats">
             <md-card flex>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
-                        <span class="md-headline">{{myUsername}}</span>
+                        <span class="md-headline">{{myLOLUserName}}</span>
                     </md-card-title-text>
                 </md-card-title>
                 <md-content-card layout="row" layout-xs="column">
-                    <md-content class="md-media-xl card-media" flex-gt-sm>
-                        <img ng-src="{{myAvatar}}">
-                    </md-content>
                     <md-content flex>
-                        <h2>Level: {{myLevel}}</h2>
-                        <h2>Rank: {{myRank}}</h2>
-                        <h2>Prestige: {{myPrestige}}</h2>
+                        <h2>Summoner ID: {{mySummonerID}}</h2>
+                        <h2>Rank: {{myLOLRank}}LP</h2>
                     </md-content>
                     <md-content flex-gt-sm>
                         <h1>COMPETITIVE</h1>
-                        <h2>Wins: {{myCompWins}}</h2>
-                        <h2>Win Rate: {{myWinRate}}</h2>
+                        <h2>Wins: {{myLOLRankedWins}}</h2>
+                        <h2>Win Rate: {{myLOLWinRate}}</h2>
                         <h2>Time Played: {{myCompPlaytime}} hours</h2>
                     </md-content>
                     <md-content class="md-media-md card-media" flex-gt-sm>
@@ -64,7 +60,7 @@
             <li class="hexagon hex_7"></li>
         </ul>
     </div>
-    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideStats">
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
                 <md-card-title-text>
@@ -77,7 +73,7 @@
                         <md-card flex>
                             <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
                                 <md-card-title-text>
-                                    <span class="md-headline">Damage</span>
+                                    <span class="md-headline">Unranked Matches</span>
                                 </md-card-title-text>
                             </md-card-title>
                             <md-content-card class="fix-me">
@@ -224,7 +220,7 @@
             </md-content-card>
         </md-card>
     </div>
-    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideStats">
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
                 <md-card-title-text>
