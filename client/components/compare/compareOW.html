@@ -1,5 +1,5 @@
 <div ng-controller="MainCtrl" theme="compareTheme">
-    <div layout="row" layout-sm="column">
+    <md-content layout="row" layout-sm="column">
         <md-content flex>
             <md-card>
                 <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
@@ -7,7 +7,7 @@
                         <span class="md-headline">Player One</span>
                     </md-card-title-text>
                 </md-card-title>
-                <form ng-submit="getMyData();">
+                <form>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Platform</label>
                         <md-select ng-model="myPlatform">
@@ -28,6 +28,9 @@
                 </form>
             </md-card>
         </md-content>
+            <md-button class="md-raised md-primary" ng-click="compare(); showLoader();" layout-align="center center">
+                Compare
+            </md-button>
         <md-content flex>
             <md-card>
                 <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
@@ -35,7 +38,7 @@
                         <span class="md-headline">Player Two</span>
                     </md-card-title-text>
                 </md-card-title>
-                <form ng-submit="getOppData();">
+                <form>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Platform</label>
                         <md-select ng-model="oppPlatform">
@@ -56,43 +59,198 @@
                 </form>
             </md-card>
         </md-content>
+    </md-content>
+    <div class="loader" ng-hide="hideLoaderCompare">
+        <ul class="hexagon-container">
+            <li class="hexagon hex_1"></li>
+            <li class="hexagon hex_2"></li>
+            <li class="hexagon hex_3"></li>
+            <li class="hexagon hex_4"></li>
+            <li class="hexagon hex_5"></li>
+            <li class="hexagon hex_6"></li>
+            <li class="hexagon hex_7"></li>
+        </ul>
     </div>
-    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+    <md-content flex layout="row" layout-xs="column" class="owfont" ng-hide="hideCompare">
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
                 <md-card-title-text>
-                    <span class="md-headline">General - {{myUsername}}</span>
+                    <span class="md-title">General</span>
+                    <span class="md-subhead">{{myUsername}}</span>
                 </md-card-title-text>
             </md-card-title>
             <md-content-card class="fix-me">
-                <h2>Rank: {{myRank}}</h2>
-                <h2>Win Rate: {{myWinRate}}</h2>
-                <h2>Games: {{gamesComp}}</h2>
-                <h2>Wins: {{myCompWins}}</h2>
-                <h2>Ties: {{ties}}</h2>
-                <h2>Losses: {{lossesComp}}</h2>
-                <h2>Eliminations: {{totalElimsComp}}</h2>
-                <h2>Kills Per Death: {{kpdComp}}</h2>
-                <h2>Time Played: {{myCompPlaytime}} hours</h2>
+                <h2 ng-if="compareRank >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Rank: {{myRank}}</h2>
+                <h2 ng-if="compareRank < 0">Rank: {{myRank}}</h2>
+                <h2 ng-if="compareWinRate >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Win Rate: {{myWinRate}}</h2>
+                <h2 ng-if="compareWinRate < 0">Win Rate: {{myWinRate}}</h2>
+                <h2 ng-if="compareGames >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Games: {{gamesComp}}</h2>
+                <h2 ng-if="compareGames < 0">Games: {{gamesComp}}</h2>
+                <h2 ng-if="compareWins >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Wins: {{myCompWins}}</h2>
+                <h2 ng-if="compareWins < 0">Wins: {{myCompWins}}</h2>
+                <h2 ng-if="compareTies <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Ties: {{ties}}</h2>
+                <h2 ng-if="compareTies > 0">Ties: {{ties}}</h2>
+                <h2 ng-if="compareLosses <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Losses: {{lossesComp}}</h2>
+                <h2 ng-if="compareLosses > 0">Losses: {{lossesComp}}</h2>
+                <h2 ng-if="compareElims >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{totalElimsComp}}</h2>
+                <h2 ng-if="compareElims < 0">Eliminations: {{totalElimsComp}}</h2>
+                <h2 ng-if="compareKPD >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Kills Per Death: {{kpdComp}}</h2>
+                <h2 ng-if="compareKPD < 0">Kills Per Death: {{kpdComp}}</h2>
+                <h2 ng-if="comparePlaytime >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Time Played: {{myCompPlaytime}} hours</h2>
+                <h2 ng-if="comparePlaytime < 0">Time Played: {{myCompPlaytime}} hours</h2>
+                <h2 ng-if="compareFinalBlows >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{totalFinalBlowsComp}}</h2>
+                <h2 ng-if="compareFinalBlows < 0">Final Blows: {{totalFinalBlowsComp}}</h2>
+                <h2 ng-if="compareDamageDone >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{totalDamageDoneComp}}</h2>
+                <h2 ng-if="compareDamageDone < 0">Damage Done: {{totalDamageDoneComp}}</h2>
+                <h2 ng-if="compareMultikills >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Multikills: {{totalMultikillsComp}}</h2>
+                <h2 ng-if="compareMultikills < 0">Multikills: {{totalMultikillsComp}}</h2>
+                <h2 ng-if="compareMedals >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Medals: {{totalMedalsComp}}</h2>
+                <h2 ng-if="compareMedals < 0">Medals: {{totalMedalsComp}}</h2>
+                <h2 ng-if="compareCards >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Cards: {{totalCardsComp}}</h2>
+                <h2 ng-if="compareCards < 0">Cards: {{totalCardsComp}}</h2>
+                <h2 ng-if="compareHealing >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing: {{totalHealingComp}}</h2>
+                <h2 ng-if="compareHealing < 0">Healing: {{totalHealingComp}}</h2>
             </md-content-card>
         </md-card>
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
                 <md-card-title-text>
-                    <span class="md-headline">General - {{oppUsername}}</span>
+                    <span class="md-title">General</span>
+                    <span class="md-subhead">{{oppUsername}}</span>
                 </md-card-title-text>
             </md-card-title>
             <md-content-card class="fix-me">
-                <h2>Rank: {{oppRank}}</h2>
-                <h2>Win Rate: {{oppWinRate}}</h2>
-                <h2>Games: {{gamesCompOpp}}</h2>
-                <h2>Wins: {{oppCompWins}}</h2>
-                <h2>Ties: {{tiesOpp}}</h2>
-                <h2>Losses: {{lossesCompOpp}}</h2>
-                <h2>Eliminations: {{totalElimsCompOpp}}</h2>
-                <h2>Kills Per Death: {{kpdCompOpp}}</h2>
-                <h2>Time Played: {{oppCompPlaytime}} hours</h2>
+                <h2 ng-if="compareRank <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Rank: {{oppRank}}</h2>
+                <h2 ng-if="compareRank > 0">Rank: {{oppRank}}</h2>
+                <h2 ng-if="compareWinRate <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Win Rate: {{oppWinRate}}</h2>
+                <h2 ng-if="compareWinRate > 0">Win Rate: {{oppWinRate}}</h2>
+                <h2 ng-if="compareGames <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Games: {{gamesCompOpp}}</h2>
+                <h2 ng-if="compareGames > 0">Games: {{gamesCompOpp}}</h2>
+                <h2 ng-if="compareWins <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Wins: {{oppCompWins}}</h2>
+                <h2 ng-if="compareWins > 0">Wins: {{oppCompWins}}</h2>
+                <h2 ng-if="compareTies >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Ties: {{tiesOpp}}</h2>
+                <h2 ng-if="compareTies < 0">Ties: {{tiesOpp}}</h2>
+                <h2 ng-if="compareLosses >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Losses: {{lossesCompOpp}}</h2>
+                <h2 ng-if="compareLosses < 0">Losses: {{lossesCompOpp}}</h2>
+                <h2 ng-if="compareElims <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{totalElimsCompOpp}}</h2>
+                <h2 ng-if="compareElims > 0">Eliminations: {{totalElimsCompOpp}}</h2>
+                <h2 ng-if="compareKPD <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Kills Per Death: {{kpdCompOpp}}</h2>
+                <h2 ng-if="compareKPD > 0">Kills Per Death: {{kpdCompOpp}}</h2>
+                <h2 ng-if="comparePlaytime <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Time Played: {{oppCompPlaytime}} hours</h2>
+                <h2 ng-if="comparePlaytime > 0">Time Played: {{oppCompPlaytime}} hours</h2>
+                <h2 ng-if="compareFinalBlows <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{totalFinalBlowsCompOpp}}</h2>
+                <h2 ng-if="compareFinalBlows > 0">Final Blows: {{totalFinalBlowsCompOpp}}</h2>
+                <h2 ng-if="compareDamageDone <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{totalDamageDoneCompOpp}}</h2>
+                <h2 ng-if="compareDamageDone > 0">Damage Done: {{totalDamageDoneCompOpp}}</h2>
+                <h2 ng-if="compareMultikills <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Multikills: {{totalMultikillsCompOpp}}</h2>
+                <h2 ng-if="compareMultikills > 0">Multikills: {{totalMultikillsCompOpp}}</h2>
+                <h2 ng-if="compareMedals <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Medals: {{totalMedalsCompOpp}}</h2>
+                <h2 ng-if="compareMedals > 0">Medals: {{totalMedalsCompOpp}}</h2>
+                <h2 ng-if="compareCards <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Cards: {{totalCardsCompOpp}}</h2>
+                <h2 ng-if="compareCards > 0">Cards: {{totalCardsCompOpp}}</h2>
+                <h2 ng-if="compareHealing <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing: {{totalHealingCompOpp}}</h2>
+                <h2 ng-if="compareHealing > 0">Healing: {{totalHealingCompOpp}}</h2>
             </md-content-card>
         </md-card>
-    </div>
+    </md-content>
+    <md-content flex layout="row" layout-xs="column" class="owfont" ng-hide="hideCompare">
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                <md-card-title-text>
+                    <span class="md-title">Averages</span>
+                    <span class="md-subhead">{{myUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2 ng-if="compareElimsAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{elimsAvgComp}}</h2>
+                <h2 ng-if="compareElimsAvg < 0">Eliminations: {{elimsAvgComp}}</h2>
+                <h2 ng-if="compareDeathsAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Deaths: {{deathsAvgComp}}</h2>
+                <h2 ng-if="compareDeathsAvg > 0">Deaths: {{deathsAvgComp}}</h2>
+                <h2 ng-if="compareDamageAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{damageDoneAvgComp}}</h2>
+                <h2 ng-if="compareDamageAvg < 0">Damage Done: {{damageDoneAvgComp}}</h2>
+                <h2 ng-if="compareHealingAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing Done: {{healingAvgComp}}</h2>
+                <h2 ng-if="compareHealingAvg < 0">Healing Done: {{healingAvgComp}}</h2>
+                <h2 ng-if="compareFinalBlowsAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{finalBlowsAvgComp}}</h2>
+                <h2 ng-if="compareFinalBlowsAvg < 0">Final Blows: {{finalBlowsAvgComp}}</h2>
+                <h2 ng-if="compareObjKillsAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Kills: {{objKillsAvgComp}}</h2>
+                <h2 ng-if="compareObjKillsAvg < 0">Objective Kills: {{objKillsAvgComp}}</h2>
+                <h2 ng-if="compareObjTimeAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Time: {{objTimeAvgComp}} seconds</h2>
+                <h2 ng-if="compareObjTimeAvg < 0">Objective Time: {{objTimeAvgComp}} seconds</h2>
+            </md-content-card>
+        </md-card>
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
+                <md-card-title-text>
+                    <span class="md-title">Averages</span>
+                    <span class="md-subhead">{{oppUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2 ng-if="compareElimsAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{elimsAvgCompOpp}}</h2>
+                <h2 ng-if="compareElimsAvg > 0">Eliminations: {{elimsAvgCompOpp}}</h2>
+                <h2 ng-if="compareDeathsAvg >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Deaths: {{deathsAvgCompOpp}}</h2>
+                <h2 ng-if="compareDeathsAvg < 0">Deaths: {{deathsAvgCompOpp}}</h2>
+                <h2 ng-if="compareDamageAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{damageDoneAvgCompOpp}}</h2>
+                <h2 ng-if="compareDamageAvg > 0">Damage Done: {{damageDoneAvgCompOpp}}</h2>
+                <h2 ng-if="compareHealingAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing Done: {{healingAvgCompOpp}}</h2>
+                <h2 ng-if="compareHealingAvg > 0">Healing Done: {{healingAvgCompOpp}}</h2>
+                <h2 ng-if="compareFinalBlowsAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{finalBlowsAvgCompOpp}}</h2>
+                <h2 ng-if="compareFinalBlowsAvg > 0">Final Blows: {{finalBlowsAvgCompOpp}}</h2>
+                <h2 ng-if="compareObjKillsAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Kills: {{objKillsAvgCompOpp}}</h2>
+                <h2 ng-if="compareObjKillsAvg > 0">Objective Kills: {{objKillsAvgCompOpp}}</h2>
+                <h2 ng-if="compareObjTimeAvg <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Time: {{objTimeAvgCompOpp}} seconds</h2>
+                <h2 ng-if="compareObjTimeAvg > 0">Objective Time: {{objTimeAvgCompOpp}} seconds</h2>
+            </md-content-card>
+        </md-card>
+    </md-content>
+    <md-content flex layout="row" layout-xs="column" class="owfont" ng-hide="hideCompare">
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                <md-card-title-text>
+                    <span class="md-title">Best In One Game</span>
+                    <span class="md-subhead">{{myUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2 ng-if="compareElimsBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{elimsBestComp}}</h2>
+                <h2 ng-if="compareElimsBest < 0">Eliminations: {{elimsBestComp}}</h2>
+                <h2 ng-if="compareMultikillBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Multikill: {{multikillBestComp}}</h2>
+                <h2 ng-if="compareMultikillBest < 0">MultiKills: {{multikillBestComp}}</h2>
+                <h2 ng-if="compareDamageBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{damageDoneBestComp}}</h2>
+                <h2 ng-if="compareDamageBest < 0">Damage Done: {{damageDoneBestComp}}</h2>
+                <h2 ng-if="compareHealingBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing Done: {{healingBestComp}}</h2>
+                <h2 ng-if="compareHealingBest < 0">Healing Done: {{healingBestComp}}</h2>
+                <h2 ng-if="compareFinalBlowsBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{finalBlowsBestComp}}</h2>
+                <h2 ng-if="compareFinalBlowsBest < 0">Final Blows: {{finalBlowsBestComp}}</h2>
+                <h2 ng-if="compareObjKillsBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Kills: {{objKillsBestComp}}</h2>
+                <h2 ng-if="compareObjKillsBest < 0">Objective Kills: {{objKillsBestComp}}</h2>
+                <h2 ng-if="compareObjTimeBest >= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Time: {{objTimeBestComp}} seconds</h2>
+                <h2 ng-if="compareObjTimeBest < 0">Objective Time: {{objTimeBestComp}} seconds</h2>
+            </md-content-card>
+        </md-card>
+        <md-card flex>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-accent-700'}">
+                <md-card-title-text>
+                    <span class="md-title">Best In One Game</span>
+                    <span class="md-subhead">{{oppUsername}}</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card class="fix-me">
+                <h2 ng-if="compareElimsBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Eliminations: {{elimsBestCompOpp}}</h2>
+                <h2 ng-if="compareElimsBest > 0">Eliminations: {{elimsBestCompOpp}}</h2>
+                <h2 ng-if="compareMultikillBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Multikill: {{multikillBestCompOpp}}</h2>
+                <h2 ng-if="compareMultikillBest > 0">MultiKills: {{multikillBestCompOpp}}</h2>
+                <h2 ng-if="compareDamageBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Damage Done: {{damageDoneBestCompOpp}}</h2>
+                <h2 ng-if="compareDamageBest > 0">Damage Done: {{damageDoneBestCompOpp}}</h2>
+                <h2 ng-if="compareHealingBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Healing Done: {{healingBestCompOpp}}</h2>
+                <h2 ng-if="compareHealingBest > 0">Healing Done: {{healingBestCompOpp}}</h2>
+                <h2 ng-if="compareFinalBlowsBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Final Blows: {{finalBlowsBestCompOpp}}</h2>
+                <h2 ng-if="compareFinalBlowsBest > 0">Final Blows: {{finalBlowsBestCompOpp}}</h2>
+                <h2 ng-if="compareObjKillsBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Kills: {{objKillsBestCompOpp}}</h2>
+                <h2 ng-if="compareObjKillsBest > 0">Objective Kills: {{objKillsBestCompOpp}}</h2>
+                <h2 ng-if="compareObjTimeBest <= 0" md-colors="::{backgroundColor: 'compareTheme-warn-700'}">Objective Time: {{objTimeBestCompOpp}} seconds</h2>
+                <h2 ng-if="compareObjTimeBest > 0">Objective Time: {{objTimeBestCompOpp}} seconds</h2>
+            </md-content-card>
+        </md-card>
+    </md-content>
 </div>
