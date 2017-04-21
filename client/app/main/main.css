@@ -210,5 +210,5 @@
 }
 
 md-tab-content {
-    overflow: auto;
+    overflow: scroll;
 }
