@@ -1,7 +1,7 @@
 <div ng-controller="MainCtrl">
     <div layout="row" layout-xs="column">
         <div flex>
-            <md-card layout-align="center">
+            <md-card layout-align="center" flex>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" >
                     <md-card-title-text>
                         <span class="md-headline">Player Search</span>
@@ -31,7 +31,7 @@
             </md-card>
         </div>
         <div flex class="owfont" ng-hide="hideStats">
-            <md-card>
+            <md-card flex>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
                         <span class="md-headline">{{myUsername}}</span>
