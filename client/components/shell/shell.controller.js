@@ -7,10 +7,10 @@ angular.module('phleepApp')
         $scope.isAdmin = Auth.isAdmin;
         $scope.getCurrentUser = Auth.getCurrentUser;
 
-        $rootScope.selectedGame = "LOL";
+        $rootScope.selectedGame = "OW";
 
-        $scope.owChosen = false;
-        $scope.lolChosen = true;
+        $scope.owChosen = true;
+        $scope.lolChosen = false;
 
         $scope.logout = function() {
             Auth.logout();

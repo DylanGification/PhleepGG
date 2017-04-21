@@ -29,8 +29,8 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     var leagueStats = [];
     var profileDetails = [];
     $scope.hideStats = true;
-    $scope.hideLOLStats = false;
-    $scope.hideCompare = false;
+    $scope.hideLOLStats = true;
+    $scope.hideCompare = true;
     $scope.hideLoader = true;
     $scope.hideLoaderCompare = true;
 
@@ -721,11 +721,21 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         var userID = $scope.mySummonerID;
         $scope.myLOLRank = profileDetails[userID]["0"].tier + " " + profileDetails[userID]["0"].entries["0"].division + " " + profileDetails[userID]["0"].entries["0"].leaguePoints;
         $scope.myLOLRankedWins = rankedMatch.wins;
+        $scope.myLOLRankedLosses = rankedMatch.losses;
         $scope.myLOLWinRate = (rankedMatch.wins / (rankedMatch.wins + rankedMatch.losses)) * 100 +"%";
-        $scope.unrankedKills = unrankedMatch.aggregatedStats.totalKills;
-        $scope.unrankedCS = unrankedMatch.aggregatedStats.totalCS;
-        $scope.unrankedTurretKills = unrankedMatch.aggregatedStats.totalTurretKills;
-        $scope.unrankedNeutralMinions = unrankedMatch.aggregatedStats.totalNeutralMinionKills;
+
+        $scope.myUnrankedKills = unrankedMatch.aggregatedStats.totalChampionKills;
+        $scope.myUnrankedCS = unrankedMatch.aggregatedStats.totalMinionKills;
+        $scope.myUnrankedTurretKills = unrankedMatch.aggregatedStats.totalTurretsKilled;
+        $scope.myUnrankedNeutralMinions = unrankedMatch.aggregatedStats.totalNeutralMinionsKilled;
+        $scope.myUnrankedAssists = unrankedMatch.aggregatedStats.totalAssists;
+        
+
+        $scope.myRankedKills = rankedMatch.aggregatedStats.totalChampionKills;
+        $scope.myRankedCS = rankedMatch.aggregatedStats.totalMinionKills;
+        $scope.myRankedTurretKills = rankedMatch.aggregatedStats.totalTurretsKilled;
+        $scope.myRankedNeutralMinions = rankedMatch.aggregatedStats.totalNeutralMinionsKilled;
+        $scope.myRankedAssists = rankedMatch.aggregatedStats.totalAssists;
     }
 
     function getMyDetails(myDetails) {

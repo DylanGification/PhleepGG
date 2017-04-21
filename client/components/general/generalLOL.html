@@ -39,7 +39,6 @@
                         <h1>COMPETITIVE</h1>
                         <h2>Wins: {{myLOLRankedWins}}</h2>
                         <h2>Win Rate: {{myLOLWinRate}}</h2>
-                        <h2>Time Played: {{myCompPlaytime}} hours</h2>
                     </md-content>
                     <md-content class="md-media-md card-media" flex-gt-sm>
                         <img ng-src="{{tierImage}}">
@@ -60,11 +59,11 @@
             <li class="hexagon hex_7"></li>
         </ul>
     </div>
-    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideStats">
+    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideLOLStats">
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
                 <md-card-title-text>
-                    <span class="md-headline">Competitive Statistics</span>
+                    <span class="md-headline">Statistics</span>
                 </md-card-title-text>
             </md-card-title>
             <md-content-card flex layout-align="space-between">
@@ -77,15 +76,11 @@
                                 </md-card-title-text>
                             </md-card-title>
                             <md-content-card class="fix-me">
-                                <h2>Melee Final Blows: {{totalMeleeComp}}</h2>
-                                <h2>Solo Kills: {{totalSoloKillsComp}}</h2>
-                                <h2>Objective Kills: {{totalObjKillsComp}}</h2>
-                                <h2>Final Blows: {{totalFinalBlowsComp}}</h2>
-                                <h2>Damage Done: {{totalDamageDoneComp}}</h2>
-                                <h2>Eliminations: {{totalElimsComp}}</h2>
-                                <h2>Environmental Kills: {{totalEnvKillsComp}}</h2>
-                                <h2>Multikills: {{totalMultikillsComp}}</h2>
-                                <h2>Kills Per Death: {{kpdComp}}</h2>
+                                <h2>Kills: {{myUnrankedKills}}</h2>
+                                <h2>Creep Score: {{myUnrankedCS}}</h2>
+                                <h2>Turret Kills: {{myUnrankedTurretKills}}</h2>
+                                <h2>Neutral Minion Kills: {{myUnrankedNeutralMinions}}</h2>
+                                <h2>Assists: {{myUnrankedAssists}}</h2>
                             </md-content-card>
                         </md-card>
                     </md-content>
@@ -93,14 +88,17 @@
                         <md-card flex>
                             <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
                                 <md-card-title-text>
-                                    <span class="md-headline">Assists</span>
+                                    <span class="md-headline">Ranked Matches</span>
                                 </md-card-title-text>
                             </md-card-title>
                             <md-content-card class="fix-me">
-                                <h2>Healing Done: {{totalHealingComp}}</h2>
-                                <h2>Recon Assists: {{totalRecAssistsComp}}</h2>
-                                <h2>Offensive Assists: {{totalOffAssistsComp}}</h2>
-                                <h2>Defensive Assists: {{totalDefAssistsComp}}</h2>
+                                <h2>Wins: {{myLOLRankedWins}}</h2>
+                                <h2>Losses: {{myLOLRankedLosses}}</h2>
+                                <h2>Kills: {{myRankedKills}}</h2>
+                                <h2>Creep Score: {{myRankedCS}}</h2>
+                                <h2>Turret Kills: {{myRankedTurretKills}}</h2>
+                                <h2>Neutral Minion Kills: {{myRankedNeutralMinions}}</h2>
+                                <h2>Assists: {{myRankedAssists}}</h2>
                             </md-content-card>
                         </md-card>
                     </md-content>
@@ -220,7 +218,7 @@
             </md-content-card>
         </md-card>
     </div>
-    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideStats">
+    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideLOLStats">
         <md-card flex>
             <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
                 <md-card-title-text>
