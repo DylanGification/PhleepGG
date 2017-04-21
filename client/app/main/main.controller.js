@@ -32,7 +32,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     var unrankedMatch = [];
     var leagueStats = [];
     var profileStats = [];
-    $scope.hideStats = true;
+    $scope.hideStats = false;
     $scope.hideLoader = true;
     var userID;
     var num = 0;
