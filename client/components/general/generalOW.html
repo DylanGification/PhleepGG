@@ -1,13 +1,13 @@
 <div ng-controller="MainCtrl">
     <div layout="row" layout-xs="column">
         <div flex>
-            <md-card layout-align="center center">
-                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" style="width: 50%;">
+            <md-card layout-align="center">
+                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" >
                     <md-card-title-text>
                         <span class="md-headline">Player Search</span>
                     </md-card-title-text>
                 </md-card-title>
-                <md-card-content style="width: 50%;">
+                <md-card-content flex>
                     <form ng-submit="getMyData()">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Platform</label>
