@@ -212,3 +212,6 @@
 md-tab-content {
     overflow: scroll;
 }
+
+md-content { height: 100%; }
+md-card-content { height: 100%; }
