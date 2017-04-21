@@ -1,6 +1,6 @@
 <div ng-controller="MainCtrl">
     <div layout="row" layout-xs="column">
-        <div flex>
+        <md-content flex>
             <md-card layout-align="center" flex>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" >
                     <md-card-title-text>
@@ -29,8 +29,8 @@
                     </form>
                 </md-content-card>
             </md-card>
-        </div>
-        <div flex class="owfont" ng-hide="hideStats">
+        </md-content>
+        <md-content flex class="owfont" ng-hide="hideStats">
             <md-card flex>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
@@ -57,7 +57,7 @@
                     </md-content>
                 </md-content-card>
             </md-card>
-        </div>
+        </md-content>
     </div>
     <br>
     <div class="loader" ng-hide="hideLoader">
