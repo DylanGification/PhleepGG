@@ -8,11 +8,23 @@
     font-family: Big Noodle Titling;
 }
 
+.lolfont {
+    font-family: Beaufort For LOL;
+}
+
 @font-face {
     font-family: Big Noodle Titling;
     src: url('/assets/fonts/big_noodle_titling.ttf') format('truetype'), /* Safari, Android, iOS */
     url('/assets/fonts/big_noodle_titling_oblique.ttf') format('truetype');
     font-weight: bold;
+}
+
+@font-face {
+    font-family: Beaufort For LOL;
+    src: url('/assets/fonts/beafortforlol-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('/assets/fonts/beafortforlol-bold.ttf') format('truetype'),
+    url('/assets/fonts/beafortforlol-bolditalic.ttf') format('truetype')
+    url('/assets/fonts/beafortforlol-italic.ttf') format('truetype');
 }
 
 
