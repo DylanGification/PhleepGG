@@ -14,7 +14,6 @@
                             <md-option ng-repeat="myPlatform in myPlatforms" value="{{myPlatform}}">{{myPlatform}}</md-option>
                         </md-select>
                     </md-input-container>
-                    <br>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Region</label>
                         <md-select ng-model="myRegion">
@@ -28,7 +27,7 @@
                 </form>
             </md-card>
         </md-content>
-            <md-button class="md-raised md-primary" ng-click="compare(); showLoader();" layout-align="center center">
+            <md-button class="md-raised md-primary md-small" ng-click="compare(); showLoader();" layout-align="center center">
                 Compare
             </md-button>
         <md-content flex>
@@ -45,7 +44,6 @@
                             <md-option ng-repeat="oppPlatform in oppPlatforms" value="{{oppPlatform}}">{{oppPlatform}}</md-option>
                         </md-select>
                     </md-input-container>
-                    <br>
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Region</label>
                         <md-select ng-model="oppRegion">
