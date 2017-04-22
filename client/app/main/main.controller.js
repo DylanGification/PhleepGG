@@ -1,8 +1,8 @@
 'use strict';
 angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socket, $rootScope) {
 
-    var apiURL = "http://54.72.42.73:4444";
-    // var apiURL = "https://owapi.net";
+    // var apiURL = "http://54.72.42.73:4444";
+    var apiURL = "https://owapi.net";
     var LOL_API_KEY = "api_key=690b6aa5-4f70-4eac-8d8c-808bd08ead0c";
 
     //OW Regions and Platforms
