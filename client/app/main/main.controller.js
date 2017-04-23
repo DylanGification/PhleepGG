@@ -769,7 +769,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.totalDefAssistsComp = myDetails[myRegion].stats.competitive.game_stats.defensive_assists;
         $scope.totalRecAssistsComp = myDetails[myRegion].stats.competitive.game_stats.recon_assists;
         $scope.totalTeleDestroyedComp = myDetails[myRegion].stats.competitive.game_stats.teleporter_pads_destroyed;
-        $scope.totalObjTimeComp = myDetails[myRegion].stats.competitive.game_stats.objective_time * 3600;
+        $scope.totalObjTimeComp = myDetails[myRegion].stats.competitive.game_stats.objective_time.toFixed(2);
         $scope.totalMeleeComp = myDetails[myRegion].stats.competitive.game_stats.melee_final_blows;
         $scope.totalMedalsComp = myDetails[myRegion].stats.competitive.game_stats.medals;
         $scope.totalCardsComp = myDetails[myRegion].stats.competitive.game_stats.cards;
@@ -782,19 +782,19 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.totalGoldComp = myDetails[myRegion].stats.competitive.game_stats.medals_gold;
         $scope.totalEnvKillsComp = myDetails[myRegion].stats.competitive.game_stats.environmental_kills;
         $scope.totalSoloKillsComp = myDetails[myRegion].stats.competitive.game_stats.solo_kills;
-        $scope.totalOnFireComp = myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire * 3600;
+        $scope.totalOnFireComp = myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire.toFixed(2);
         $scope.totalFinalBlowsComp = myDetails[myRegion].stats.competitive.game_stats.final_blows;
         $scope.totalTimePlayedComp = myDetails[myRegion].stats.competitive.game_stats.time_played;
         $scope.totalEnvDeathsComp = myDetails[myRegion].stats.competitive.game_stats.environmental_deaths;
         $scope.kpdComp = myDetails[myRegion].stats.competitive.game_stats.kpd;
         $scope.shieldGensDestroyedComp = myDetails[myRegion].stats.competitive.game_stats.shield_generators_destroyed;
-        $scope.shieldGensDestroyedComp = myDetails[myRegion].stats.competitive.game_stats.turrets_destroyed;
+        $scope.turretsDestroyedComp = myDetails[myRegion].stats.competitive.game_stats.turrets_destroyed;
 
         //BEST/MOST IN GAME
         $scope.multikillBestComp = myDetails[myRegion].stats.competitive.game_stats.multikill_best;
         $scope.objKillsBestComp = myDetails[myRegion].stats.competitive.game_stats.objective_kills_most_in_game;
         $scope.meleeBestComp = myDetails[myRegion].stats.competitive.game_stats.melee_final_blows_most_in_game;
-        $scope.onFireBestComp = myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game * 3600;
+        $scope.onFireBestComp = (myDetails[myRegion].stats.competitive.game_stats.time_spent_on_fire_most_in_game * 3600).toFixed(2);
         $scope.finalBlowsBestComp = myDetails[myRegion].stats.competitive.game_stats.final_blows_most_in_game;
         $scope.defAssistsBestComp = myDetails[myRegion].stats.competitive.game_stats.defensive_assists_most_in_game;
         $scope.offAssistsBestComp = myDetails[myRegion].stats.competitive.game_stats.offensive_assists_most_in_game;
@@ -802,7 +802,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.elimsBestComp = myDetails[myRegion].stats.competitive.game_stats.eliminations_most_in_game;
         $scope.soloKillsBestComp = myDetails[myRegion].stats.competitive.game_stats.solo_kills_most_in_game;
         $scope.damageDoneBestComp = myDetails[myRegion].stats.competitive.game_stats.damage_done_most_in_game;
-        $scope.objTimeBestComp = myDetails[myRegion].stats.competitive.game_stats.objective_time_most_in_game * 3600;
+        $scope.objTimeBestComp = (myDetails[myRegion].stats.competitive.game_stats.objective_time_most_in_game * 3600).toFixed(2);
         $scope.bestKillStreakComp = myDetails[myRegion].stats.competitive.game_stats.kill_streak_best;
         $scope.recAssistsBestComp = myDetails[myRegion].stats.competitive.game_stats.recon_assists_most_in_game;
         $scope.shieldGensDestroyedBestComp = myDetails[myRegion].stats.competitive.game_stats.shield_generator_destroyed_most_in_game;
@@ -819,14 +819,16 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.defAssistsAvgComp = myDetails[myRegion].stats.competitive.average_stats.defensive_assists_avg;
         $scope.damageDoneAvgComp = myDetails[myRegion].stats.competitive.average_stats.damage_done_avg;
         $scope.deathsAvgComp = myDetails[myRegion].stats.competitive.average_stats.deaths_avg;
-        $scope.objTimeAvgComp = myDetails[myRegion].stats.competitive.average_stats.objective_time_avg * 3600;
+        $scope.objTimeAvgComp = (myDetails[myRegion].stats.competitive.average_stats.objective_time_avg * 3600).toFixed(2);
         $scope.soloKillsAvgComp = myDetails[myRegion].stats.competitive.average_stats.solo_kills_avg;
-        $scope.onFireAvgComp = myDetails[myRegion].stats.competitive.average_stats.time_spent_on_fire_avg * 3600;
+        $scope.onFireAvgComp = (myDetails[myRegion].stats.competitive.average_stats.time_spent_on_fire_avg * 3600).toFixed(2);
         $scope.objKillsAvgComp = myDetails[myRegion].stats.competitive.average_stats.objective_kills_avg;
 
 
         //QUICKPLAY
         $scope.gamesQP = myDetails[myRegion].stats.quickplay.overall_stats.games;
+        $scope.winsQP = myDetails[myRegion].stats.quickplay.overall_stats.wins;
+        $scope.tiesQP = myDetails[myRegion].stats.quickplay.overall_stats.ties;
         $scope.lossesQP = myDetails[myRegion].stats.quickplay.overall_stats.losses;
         $scope.totalObjKillsQP = myDetails[myRegion].stats.quickplay.game_stats.objective_kills;
         $scope.totalHealingQP = myDetails[myRegion].stats.quickplay.game_stats.healing_done;
@@ -834,7 +836,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.totalDefAssistsQP = myDetails[myRegion].stats.quickplay.game_stats.defensive_assists;
         $scope.totalRecAssistsQP = myDetails[myRegion].stats.quickplay.game_stats.recon_assists;
         $scope.totalTeleDestroyedQP = myDetails[myRegion].stats.quickplay.game_stats.teleporter_pads_destroyed;
-        $scope.totalObjTimeQP = myDetails[myRegion].stats.quickplay.game_stats.objective_time * 3600;
+        $scope.totalObjTimeQP = (myDetails[myRegion].stats.quickplay.game_stats.objective_time * 3600).toFixed(2);
         $scope.totalMeleeQP = myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows;
         $scope.totalMedalsQP = myDetails[myRegion].stats.quickplay.game_stats.medals;
         $scope.totalCardsQP = myDetails[myRegion].stats.quickplay.game_stats.cards;
@@ -847,20 +849,20 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.totalGoldQP = myDetails[myRegion].stats.quickplay.game_stats.medals_gold;
         $scope.totalEnvKillsQP = myDetails[myRegion].stats.quickplay.game_stats.environmental_kills;
         $scope.totalSoloKillsQP = myDetails[myRegion].stats.quickplay.game_stats.solo_kills;
-        $scope.totalOnFireQP = myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire * 3600;
+        $scope.totalOnFireQP = (myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire * 3600).toFixed(2);
         $scope.totalFinalBlowsQP = myDetails[myRegion].stats.quickplay.game_stats.final_blows;
         $scope.totalTimePlayedQP = myDetails[myRegion].stats.quickplay.game_stats.time_played;
         $scope.totalEnvDeathsQP = myDetails[myRegion].stats.quickplay.game_stats.environmental_deaths;
         $scope.kpdQP = myDetails[myRegion].stats.quickplay.game_stats.kpd;
         $scope.shieldGensDestroyedQP = myDetails[myRegion].stats.quickplay.game_stats.shield_generators_destroyed;
-        $scope.shieldGensDestroyedQP = myDetails[myRegion].stats.quickplay.game_stats.turrets_destroyed;
+        $scope.turretsDestroyedQP = myDetails[myRegion].stats.quickplay.game_stats.turrets_destroyed;
         $scope.playtimeQP = myDetails[myRegion].stats.quickplay.game_stats.time_played;
 
         //BEST/MOST IN GAME
         $scope.multikillBestQP = myDetails[myRegion].stats.quickplay.game_stats.multikill_best;
         $scope.objKillsBestQP = myDetails[myRegion].stats.quickplay.game_stats.objective_kills_most_in_game;
         $scope.meleeBestQP = myDetails[myRegion].stats.quickplay.game_stats.melee_final_blows_most_in_game;
-        $scope.onFireBestQP = myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game * 3600;
+        $scope.onFireBestQP = (myDetails[myRegion].stats.quickplay.game_stats.time_spent_on_fire_most_in_game * 3600).toFixed(2);
         $scope.finalBlowsBestQP = myDetails[myRegion].stats.quickplay.game_stats.final_blows_most_in_game;
         $scope.defAssistsBestQP = myDetails[myRegion].stats.quickplay.game_stats.defensive_assists_most_in_game;
         $scope.offAssistsBestQP = myDetails[myRegion].stats.quickplay.game_stats.offensive_assists_most_in_game;
@@ -868,7 +870,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.elimsBestQP = myDetails[myRegion].stats.quickplay.game_stats.eliminations_most_in_game;
         $scope.soloKillsBestQP = myDetails[myRegion].stats.quickplay.game_stats.solo_kills_most_in_game;
         $scope.damageDoneBestQP = myDetails[myRegion].stats.quickplay.game_stats.damage_done_most_in_game;
-        $scope.objTimeBestQP = myDetails[myRegion].stats.quickplay.game_stats.objective_time_most_in_game * 3600;
+        $scope.objTimeBestQP = (myDetails[myRegion].stats.quickplay.game_stats.objective_time_most_in_game * 3600).toFixed(2);
         $scope.bestKillStreakQP = myDetails[myRegion].stats.quickplay.game_stats.kill_streak_best;
         $scope.recAssistsBestQP = myDetails[myRegion].stats.quickplay.game_stats.recon_assists_most_in_game;
         $scope.shieldGensDestroyedBestQP = myDetails[myRegion].stats.quickplay.game_stats.shield_generator_destroyed_most_in_game;
@@ -885,9 +887,9 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.defAssistsAvgQP = myDetails[myRegion].stats.quickplay.average_stats.defensive_assists_avg;
         $scope.damageDoneAvgQP = myDetails[myRegion].stats.quickplay.average_stats.damage_done_avg;
         $scope.deathsAvgQP = myDetails[myRegion].stats.quickplay.average_stats.deaths_avg;
-        $scope.objTimeAvgQP = myDetails[myRegion].stats.quickplay.average_stats.objective_time_avg * 3600;
+        $scope.objTimeAvgQP = myDetails[myRegion].stats.quickplay.average_stats.objective_time_avg.toFixed(2);
         $scope.soloKillsAvgQP = myDetails[myRegion].stats.quickplay.average_stats.solo_kills_avg;
-        $scope.onFireAvgQP = myDetails[myRegion].stats.quickplay.average_stats.time_spent_on_fire_avg * 3600;
+        $scope.onFireAvgQP = myDetails[myRegion].stats.quickplay.average_stats.time_spent_on_fire_avg.toFixed(2);
         $scope.objKillsAvgQP = myDetails[myRegion].stats.quickplay.average_stats.objective_kills_avg;
 
         myCall = true;

@@ -26,7 +26,7 @@
 }
 
 
-/*Overwatch Loader*/
+/*Overwatch Loader which was accessed at https://codepen.io/CCG/pen/KrANmJ*/
 
 .loader {
     position: fixed;
@@ -219,7 +219,7 @@
     padding: 0 10px;
 }
 
-md-tab-content {
+/*md-tab-content {
     overflow: scroll;
 }
 
@@ -229,7 +229,7 @@ md-content {
 
 md-card-content {
     height: 100%;
-}
+}*/
 
 .md-button.md-small {
     width: 10%;
