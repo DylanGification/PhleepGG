@@ -2,7 +2,7 @@
     <div layout="row" layout-xs="column">
         <md-content flex>
             <md-card layout-align="center" flex>
-                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" >
+                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
                         <span class="md-headline">Player Search</span>
                     </md-card-title-text>
@@ -86,7 +86,7 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-warn-700'}">
                                 <md-card-title-text>
                                     <span class="md-headline">Ranked Matches</span>
                                 </md-card-title-text>
@@ -106,271 +106,47 @@
                         <md-card flex>
                             <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
                                 <md-card-title-text>
-                                    <span class="md-headline">Best/Most in Game</span>
+                                    <span class="md-headline">Player Stats</span>
                                 </md-card-title-text>
                             </md-card-title>
                             <md-content-card class="fix-me">
-                                <h2>Eliminations: {{elimsBestComp}}</h2>
-                                <h2>Final Blows: {{finalBlowsBestComp}}</h2>
-                                <h2>Damage Done: {{damageDoneBestComp}} </h2>
-                                <h2>Healing Done: {{healingBestComp}}</h2>
-                                <h2>Defensive Assists: {{defAssistsBestComp}}</h2>
-                                <h2>Offensive Assists: {{offAssistsBestComp}}</h2>
-                                <h2>Objective Kills: {{objKillsBestComp}} </h2>
-                                <h2>Objective Time: {{objTimeBestComp}} seconds</h2>
-                                <h2>Multikill: {{multikillBestComp}}</h2>
-                                <h2>Solo Kills: {{soloKillsBestComp}}</h2>
-                                <h2>Time Spent On Fire: {{onFireBestComp}} seconds</h2>
-                                <h2>Melee Final Blows: {{meleeBestComp}}</h2>
-                                <h2>Kill Streak: {{bestKillStreakComp}}</h2>
+                                <h2>Total Wins: {{myLOLWins}}</h2>
+                                <h2>Total Loss: {{myLOLLoss}}</h2>
+                                <h2>Kills: {{myLOLKills}} </h2>
+                                <h2>Damage Dealt: {{myLOLTotalDamageDealt}}</h2>
+                                <h2>Damage Taken: {{myLOLTotalDamageTaken}}</h2>
+                                <h2>Creep Score: {{myLOLTotalCS}}</h2>
+                                <h2>Double Kills: {{myLOLTotalDoubleKills}} </h2>
+                                <h2>Triple Kills: {{myLOLTotalTripleKills}}</h2>
+                                <h2>Quadra Kills: {{myLOLTotalQuadraKills}}</h2>
+                                <h2>Penta Kills: {{myLOLTotalPentaKills}}</h2>
+                                <h2>Unreal Kills: {{myLOLTotalUnrealKills}}</h2>
+                                <h2>Deaths: {{myLOLTotalDeaths}}</h2>
+                                <h2>Gold Earned: {{myLOLTotalGoldEarned}}</h2>
+                                <h2>Turrets Killed: {{myLOLTotalTurretsKilled}}</h2>
+                                <h2>Physical Damage Dealt: {{myLOLTotalPhysicalDamageDealt}}</h2>
+                                <h2>Magic Damage Dealt: {{myLOLTotalMagicDamageDealt}}</h2>
+                                <h2>Neutral Minions Killed: {{myLOLTotalNeutralMinionsKilled}}</h2>
+                                <h2>First Bloods: {{myLOLTotalFirstBlood}}</h2>
+                                <h2>Assists: {{myLOLTotalAssists}}</h2>
+                                <h2>Healing Done: {{myLOLTotalHeal}}</h2>
                             </md-content-card>
                         </md-card>
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Deaths</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Deaths: {{totalDeathsComp}}</h2>
-                                <h2>Environmental Deaths: {{totalEnvDeathsComp}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Average</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Melee Final Blows: {{meleeAvgComp}}</h2>
-                                <h2>Time Spent On Fire: {{onFireAvgComp}} seconds</h2>
-                                <h2>Solo Kills: {{soloKillsAvgComp}}</h2>
-                                <h2>Objective Time: {{objTimeAvgComp}} seconds</h2>
-                                <h2>Objective Kills: {{objKillsAvgComp}}</h2>
-                                <h2>Healing Done: {{healingAvgComp}}</h2>
-                                <h2>Final Blows: {{finalBlowsAvgComp}}</h2>
-                                <h2>Deaths: {{deathsAvgComp}}</h2>
-                                <h2>Damage Done: {{damageDoneAvgComp}}</h2>
-                                <h2>Eliminations: {{elimsAvgComp}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Match Awards</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Cards: {{totalCardsComp}}</h2>
-                                <h2>Medals: {{totalMedalsComp}}</h2>
-                                <h2>Gold Medals: {{totalGoldComp}}</h2>
-                                <h2>Silver Medals: {{totalSilverComp}}</h2>
-                                <h2>Bronze Medals: {{totalBronzeComp}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Misceallaneous</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Shield Generators Destroyed: {{shieldGensDestroyedComp}}</h2>
-                                <h2>Turrets Destroyed: {{turretsDestroyedComp}}</h2>
-                                <h2>Teleporters Destroyed: {{totalTeleDestroyedComp}}</h2>
-                                <h1>Most in Game</h1>
-                                <h2>Recon Assists: {{recAssistsBestComp}}</h2>
-                                <h2>Shield Generator Destroyed: {{shieldGensDestroyedBestComp}}</h2>
-                                <h2>Turrets Destroyed: {{turretsDestroyedBestComp}}</h2>
-                                <h2>Environmental Kills: {{envKillsBestComp}}</h2>
-                                <h2>Teleporters Destroyed: {{teleDestroyedBestComp}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Game</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Games Played: {{gamesComp}}</h2>
-                                <h2>Games Won: {{myCompWinsComp}}</h2>
-                                <h2>Games Tied: {{tiesComp}}</h2>
-                                <h2>Games Lost: {{lossesComp}}</h2>
-                                <h2>Time Spent On Fire: {{totalOnFireComp}} seconds</h2>
-                                <h2>Objective Time: {{totalObjTimeComp}} seconds</h2>
-                                <h2>Time Played: {{myCompPlaytimeComp}} hours</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                </md-content>
-            </md-content-card>
-        </md-card>
-    </div>
-    <div flex layout="row" layout-xs="column" class="lolfont" ng-hide="hideLOLStats">
-        <md-card flex>
-            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
-                <md-card-title-text>
-                    <span class="md-headline">Quick Play Statistics</span>
-                </md-card-title-text>
-            </md-card-title>
-            <md-content-card flex layout-align="space-between">
-                <md-content layout="row" layout-xs="column">
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Damage</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Melee Final Blows: {{totalMeleeQP}}</h2>
-                                <h2>Solo Kills: {{totalSoloKillsQP}}</h2>
-                                <h2>Objective Kills: {{totalObjKillsQP}}</h2>
-                                <h2>Final Blows: {{totalFinalBlowsQP}}</h2>
-                                <h2>Damage Done: {{totalDamageDoneQP}}</h2>
-                                <h2>Eliminations: {{totalElimsQP}}</h2>
-                                <h2>Environmental Kills: {{totalEnvKillsQP}}</h2>
-                                <h2>Multikills: {{totalMultikillsQP}}</h2>
-                                <h2>Kills Per Death: {{kpdQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Assists</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Healing Done: {{totalHealingQP}}</h2>
-                                <h2>Recon Assists: {{totalRecAssistsQP}}</h2>
-                                <h2>Offensive Assists: {{totalOffAssistsQP}}</h2>
-                                <h2>Defensive Assists: {{totalDefAssistsQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-warn-700'}">
                                 <md-card-title-text>
                                     <span class="md-headline">Best/Most in Game</span>
                                 </md-card-title-text>
                             </md-card-title>
                             <md-content-card class="fix-me">
-                                <h2>Eliminations: {{elimsBestQP}}</h2>
-                                <h2>Final Blows: {{finalBlowsBestQP}}</h2>
-                                <h2>Damage Done: {{damageDoneBestQP}} </h2>
-                                <h2>Healing Done: {{healingBestQP}}</h2>
-                                <h2>Defensive Assists: {{defAssistsBestQP}}</h2>
-                                <h2>Offensive Assists: {{offAssistsBestQP}}</h2>
-                                <h2>Objective Kills: {{objKillsBestQP}} </h2>
-                                <h2>Objective Time: {{objTimeBestQP}} seconds</h2>
-                                <h2>Multikill: {{multikillBestQP}}</h2>
-                                <h2>Solo Kills: {{soloKillsBestQP}}</h2>
-                                <h2>Time Spent On Fire: {{onFireBestQP}} seconds</h2>
-                                <h2>Melee Final Blows: {{meleeBestQP}}</h2>
-                                <h2>Kill Streak: {{bestKillStreakQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Deaths</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Deaths: {{totalDeathsQP}}</h2>
-                                <h2>Environmental Deaths: {{totalEnvDeathsQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Average</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Melee Final Blows: {{meleeAvgQP}}</h2>
-                                <h2>Time Spent On Fire: {{onFireAvgQP}} seconds</h2>
-                                <h2>Solo Kills: {{soloKillsAvgQP}}</h2>
-                                <h2>Objective Time: {{objTimeAvgQP}} seconds</h2>
-                                <h2>Objective Kills: {{objKillsAvgQP}}</h2>
-                                <h2>Healing Done: {{healingAvgQP}}</h2>
-                                <h2>Final Blows: {{finalBlowsAvgQP}}</h2>
-                                <h2>Deaths: {{deathsAvgQP}}</h2>
-                                <h2>Damage Done: {{damageDoneAvgQP}}</h2>
-                                <h2>Eliminations: {{elimsAvgQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Match Awards</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Cards: {{totalCardsQP}}</h2>
-                                <h2>Medals: {{totalMedalsQP}}</h2>
-                                <h2>Gold Medals: {{totalGoldQP}}</h2>
-                                <h2>Silver Medals: {{totalSilverQP}}</h2>
-                                <h2>Bronze Medals: {{totalBronzeQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Misceallaneous</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Shield Generators Destroyed: {{shieldGensDestroyedQP}}</h2>
-                                <h2>Turrets Destroyed: {{turretsDestroyedQP}}</h2>
-                                <h2>Teleporters Destroyed: {{totalTeleDestroyedQP}}</h2>
-                                <h1>Most in Game</h1>
-                                <h2>Recon Assists: {{recAssistsBestQP}}</h2>
-                                <h2>Shield Generator Destroyed: {{shieldGensDestroyedBestQP}}</h2>
-                                <h2>Turrets Destroyed: {{turretsDestroyedBestQP}}</h2>
-                                <h2>Environmental Kills: {{envKillsBestQP}}</h2>
-                                <h2>Teleporters Destroyed: {{teleDestroyedBestQP}}</h2>
-                            </md-content-card>
-                        </md-card>
-                    </md-content>
-                    <md-content flex>
-                        <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
-                                <md-card-title-text>
-                                    <span class="md-headline">Game</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-content-card class="fix-me">
-                                <h2>Games Played: {{gamesQP}}</h2>
-                                <h2>Games Won: {{myCompWinsQP}}</h2>
-                                <h2>Games Tied: {{tiesQP}}</h2>
-                                <h2>Games Lost: {{lossesQP}}</h2>
-                                <h2>Time Spent On Fire: {{totalOnFireQP}} seconds</h2>
-                                <h2>Objective Time: {{totalObjTimeQP}} seconds</h2>
-                                <h2>Time Played: {{playtimeQP}} hours</h2>
+                                <h2>Kills Per Game: {{myLOLMostKillsPerGame}}</h2>
+                                <h2>Killing Spree: {{maxLargestKillingSpree}}</h2>
+                                <h2>Champion Kills: {{maxChampionsKilled}} </h2>
+                                <h2>Deaths: {{maxNumDeaths}}</h2>
+                                <h2>Time Played: {{maxTimePlayed}}</h2>
+                                <h2>Time Spent Alive: {{maxTimeSpentLiving}}</h2>
                             </md-content-card>
                         </md-card>
                     </md-content>

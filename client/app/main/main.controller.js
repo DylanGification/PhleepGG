@@ -21,6 +21,8 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     $scope.myUserInput = "";
     $scope.myLOLUserInput = "";
 
+    var projRegion;
+
 
     //Opponent details
     var oppDetails = [];
@@ -34,13 +36,14 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     $scope.hideLoader = true;
     $scope.hideLoaderCompare = true;
 
+    $scope.projectedDetails;
+
     $scope.showLoader = function() {
         $scope.hideLoaderCompare = false;
     }
 
     $scope.compare = function() {
-        setTimeout(function() { $scope.getMyData(); }, 5000);
-        $scope.getOppData();
+        setTimeout(function() { $scope.getMyData(); }, 5000), $scope.getOppData();
     }
     var userID;
     var num = 0;
@@ -260,6 +263,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.hideLoader = false;
         var myUserName = $scope.myUserInput.replace("#", "-");
         var myRegion = $scope.myRegion.toLowerCase();
+        projRegion = $scope.myRegion.toLowerCase();
         var myPlatform = $scope.myPlatform.toLowerCase();
         $http({
             method: 'GET',
@@ -269,6 +273,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
             }
         }).then(function successCallback(response) {
             myDetails = response.data;
+            $scope.projectedDetails = myDetails;
             $http.post('/api/overwatchs', {
                 name: myUserName,
                 level: myDetails[myRegion].stats.quickplay.overall_stats.level,
@@ -697,6 +702,7 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
                                         }
                                     });
                                     $scope.getMyLOLDetails(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails);
+                                    $scope.hideLoader = false;
                                     console.log("Added " + myUserName + " to MongoDB");
                                 });
 
@@ -722,20 +728,52 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
         $scope.myLOLRank = profileDetails[userID]["0"].tier + " " + profileDetails[userID]["0"].entries["0"].division + " " + profileDetails[userID]["0"].entries["0"].leaguePoints;
         $scope.myLOLRankedWins = rankedMatch.wins;
         $scope.myLOLRankedLosses = rankedMatch.losses;
-        $scope.myLOLWinRate = (rankedMatch.wins / (rankedMatch.wins + rankedMatch.losses)) * 100 +"%";
+        $scope.myLOLWinRate = (rankedMatch.wins / (rankedMatch.wins + rankedMatch.losses)) * 100 + "%";
 
         $scope.myUnrankedKills = unrankedMatch.aggregatedStats.totalChampionKills;
         $scope.myUnrankedCS = unrankedMatch.aggregatedStats.totalMinionKills;
         $scope.myUnrankedTurretKills = unrankedMatch.aggregatedStats.totalTurretsKilled;
         $scope.myUnrankedNeutralMinions = unrankedMatch.aggregatedStats.totalNeutralMinionsKilled;
         $scope.myUnrankedAssists = unrankedMatch.aggregatedStats.totalAssists;
-        
+
 
         $scope.myRankedKills = rankedMatch.aggregatedStats.totalChampionKills;
         $scope.myRankedCS = rankedMatch.aggregatedStats.totalMinionKills;
         $scope.myRankedTurretKills = rankedMatch.aggregatedStats.totalTurretsKilled;
         $scope.myRankedNeutralMinions = rankedMatch.aggregatedStats.totalNeutralMinionsKilled;
         $scope.myRankedAssists = rankedMatch.aggregatedStats.totalAssists;
+
+        $scope.myLOLWins = leagueStats.stats.totalSessionsWon;
+        $scope.myLOLLoss = leagueStats.stats.totalSessionsLost;
+        $scope.myLOLKills = leagueStats.stats.totalChampionKills;
+        $scope.myLOLKillingSpree = leagueStats.stats.killingSpree;
+        $scope.myLOLTotalDamageDealt = leagueStats.stats.totalDamageDealt;
+        $scope.myLOLTotalDamageTaken = leagueStats.stats.totalDamageTaken;
+        $scope.myLOLMostKillsPerGame = leagueStats.stats.mostChampionKillsPerSession;
+        $scope.myLOLTotalCS = leagueStats.stats.totalMinionKills;
+        $scope.myLOLTotalDoubleKills = leagueStats.stats.totalDoubleKills;
+        $scope.myLOLTotalTripleKills = leagueStats.stats.totalTripleKills;
+        $scope.myLOLTotalQuadraKills = leagueStats.stats.totalQuadraKills;
+        $scope.myLOLTotalPentaKills = leagueStats.stats.totalPentaKills;
+        $scope.myLOLTotalUnrealKills = leagueStats.stats.totalUnrealKills;
+        $scope.myLOLTotalDeaths = leagueStats.stats.totalDeathsPerSession;
+        $scope.myLOLTotalGoldEarned = leagueStats.stats.totalGoldEarned;
+        $scope.myLOLTotalTurretsKilled = leagueStats.stats.totalTurretsKilled;
+        $scope.myLOLTotalPhysicalDamageDealt = leagueStats.stats.totalPhysicalDamageDealt;
+        $scope.myLOLTotalMagicDamageDealt = leagueStats.stats.totalMagicDamageDealt;
+        $scope.myLOLTotalNeutralMinionsKilled = leagueStats.stats.totalNeutralMinionsKilled;
+        $scope.myLOLTotalFirstBlood = leagueStats.stats.totalFirstBlood;
+        $scope.myLOLTotalAssists = leagueStats.stats.totalAssists;
+        $scope.myLOLTotalHeal = leagueStats.stats.totalHeal;
+        $scope.maxLargestKillingSpree = leagueStats.stats.maxLargestKillingSpree;
+        $scope.maxChampionsKilled = leagueStats.stats.maxChampionsKilled;
+        $scope.maxNumDeaths = leagueStats.stats.maxNumDeaths;
+        $scope.maxTimePlayed = leagueStats.stats.maxTimePlayed;
+        $scope.maxTimeSpentLiving = leagueStats.stats.maxTimeSpentLiving;
+
+        //Set visible divs
+        $scope.hideLOLStats = false;
+        $scope.hideLoader = true;
     }
 
     function getMyDetails(myDetails) {
@@ -1313,6 +1351,14 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     function calculateStatsFloat(myStat, oppStat) {
         var float = parseFloat(myStat) - parseFloat(oppStat);
         return float;
+    }
+
+    $scope.getProjectedStats = function() {
+        var projDetails = $scope.projectedDetails;
+        var myRegion = projRegion;
+        console.log(projDetails, myRegion);
+        var level = projDetails[myRegion].stats.quickplay.overall_stats.level;
+        console.log(level + "my level");
     }
 
 
