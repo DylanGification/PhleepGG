@@ -2,7 +2,7 @@
     <div layout="row" layout-xs="column">
         <md-content flex>
             <md-card layout-align="center" flex>
-                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}" >
+                <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
                         <span class="md-headline">Player Search</span>
                     </md-card-title-text>
@@ -29,18 +29,18 @@
                 </md-content-card>
             </md-card>
         </md-content>
-        <md-content flex class="owfont" ng-hide="hideStats">
-            <md-card flex>
+        <md-content flex-gt-sm class="owfont" ng-hide="hideStats">
+            <md-card>
                 <md-card-title md-colors="::{backgroundColor: 'default-primary-700'}">
                     <md-card-title-text>
                         <span class="md-headline">{{myUsername}}</span>
                     </md-card-title-text>
                 </md-card-title>
-                <md-content-card layout="row" layout-xs="column">
-                    <md-content class="md-media-xl card-media" flex-gt-sm>
-                        <img ng-src="{{myAvatar}}">
+                <md-content-card layout="row" layout-xs="column" flex-gt-sm style="background-color: rgb(250,250,250);">
+                    <md-content class=" md-media-xl card-media " flex-gt-sm>
+                        <img ng-src="{{myAvatar}} ">
                     </md-content>
-                    <md-content flex>
+                    <md-content flex-gt-sm>
                         <h2>Level: {{myLevel}}</h2>
                         <h2>Rank: {{myRank}}</h2>
                         <h2>Prestige: {{myPrestige}}</h2>
@@ -51,42 +51,42 @@
                         <h2>Win Rate: {{myWinRate}}</h2>
                         <h2>Time Played: {{myCompPlaytime}} hours</h2>
                     </md-content>
-                    <md-content class="md-media-md card-media" flex-gt-sm>
-                        <img ng-src="{{tierImage}}">
+                    <md-content class="md-media-sm card-media ">
+                        <img ng-src="{{tierImage}} ">
                     </md-content>
                 </md-content-card>
             </md-card>
         </md-content>
     </div>
     <br>
-    <div class="loader" ng-hide="hideLoader">
-        <ul class="hexagon-container">
-            <li class="hexagon hex_1"></li>
-            <li class="hexagon hex_2"></li>
-            <li class="hexagon hex_3"></li>
-            <li class="hexagon hex_4"></li>
-            <li class="hexagon hex_5"></li>
-            <li class="hexagon hex_6"></li>
-            <li class="hexagon hex_7"></li>
+    <div class="loader " ng-hide="hideLoader ">
+        <ul class="hexagon-container ">
+            <li class="hexagon hex_1 "></li>
+            <li class="hexagon hex_2 "></li>
+            <li class="hexagon hex_3 "></li>
+            <li class="hexagon hex_4 "></li>
+            <li class="hexagon hex_5 "></li>
+            <li class="hexagon hex_6 "></li>
+            <li class="hexagon hex_7 "></li>
         </ul>
     </div>
-    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+    <div flex layout="row " layout-xs="column " class="owfont " ng-hide="hideStats ">
         <md-card flex>
-            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                 <md-card-title-text>
-                    <span class="md-headline">Competitive Statistics</span>
+                    <span class="md-headline ">Competitive Statistics</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-content-card flex layout-align="space-between">
-                <md-content layout="row" layout-xs="column">
+            <md-content-card flex layout-align="space-between ">
+                <md-content layout="row " layout-xs="column ">
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Damage</span>
+                                    <span class="md-headline ">Damage</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Melee Final Blows: {{totalMeleeComp}}</h2>
                                 <h2>Solo Kills: {{totalSoloKillsComp}}</h2>
                                 <h2>Objective Kills: {{totalObjKillsComp}}</h2>
@@ -101,12 +101,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Assists</span>
+                                    <span class="md-headline ">Assists</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Healing Done: {{totalHealingComp}}</h2>
                                 <h2>Recon Assists: {{totalRecAssistsComp}}</h2>
                                 <h2>Offensive Assists: {{totalOffAssistsComp}}</h2>
@@ -116,12 +116,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Best/Most in Game</span>
+                                    <span class="md-headline ">Best/Most in Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Eliminations: {{elimsBestComp}}</h2>
                                 <h2>Final Blows: {{finalBlowsBestComp}}</h2>
                                 <h2>Damage Done: {{damageDoneBestComp}} </h2>
@@ -140,12 +140,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Deaths</span>
+                                    <span class="md-headline ">Deaths</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Deaths: {{totalDeathsComp}}</h2>
                                 <h2>Environmental Deaths: {{totalEnvDeathsComp}}</h2>
                             </md-content-card>
@@ -153,12 +153,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Average</span>
+                                    <span class="md-headline ">Average</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Melee Final Blows: {{meleeAvgComp}}</h2>
                                 <h2>Time Spent On Fire: {{onFireAvgComp}} seconds</h2>
                                 <h2>Solo Kills: {{soloKillsAvgComp}}</h2>
@@ -174,12 +174,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Match Awards</span>
+                                    <span class="md-headline ">Match Awards</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Cards: {{totalCardsComp}}</h2>
                                 <h2>Medals: {{totalMedalsComp}}</h2>
                                 <h2>Gold Medals: {{totalGoldComp}}</h2>
@@ -190,12 +190,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Misceallaneous</span>
+                                    <span class="md-headline ">Misceallaneous</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Shield Generators Destroyed: {{shieldGensDestroyedComp}}</h2>
                                 <h2>Turrets Destroyed: {{turretsDestroyedComp}}</h2>
                                 <h2>Teleporters Destroyed: {{totalTeleDestroyedComp}}</h2>
@@ -210,12 +210,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Game</span>
+                                    <span class="md-headline ">Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Games Played: {{gamesComp}}</h2>
                                 <h2>Games Won: {{myCompWinsComp}}</h2>
                                 <h2>Games Tied: {{tiesComp}}</h2>
@@ -230,23 +230,23 @@
             </md-content-card>
         </md-card>
     </div>
-    <div flex layout="row" layout-xs="column" class="owfont" ng-hide="hideStats">
+    <div flex layout="row " layout-xs="column " class="owfont " ng-hide="hideStats ">
         <md-card flex>
-            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'}">
+            <md-card-title md-colors="::{backgroundColor: 'default-accent-700'} ">
                 <md-card-title-text>
-                    <span class="md-headline">Quick Play Statistics</span>
+                    <span class="md-headline ">Quick Play Statistics</span>
                 </md-card-title-text>
             </md-card-title>
-            <md-content-card flex layout-align="space-between">
-                <md-content layout="row" layout-xs="column">
+            <md-content-card flex layout-align="space-between ">
+                <md-content layout="row " layout-xs="column ">
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Damage</span>
+                                    <span class="md-headline ">Damage</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Melee Final Blows: {{totalMeleeQP}}</h2>
                                 <h2>Solo Kills: {{totalSoloKillsQP}}</h2>
                                 <h2>Objective Kills: {{totalObjKillsQP}}</h2>
@@ -261,12 +261,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Assists</span>
+                                    <span class="md-headline ">Assists</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Healing Done: {{totalHealingQP}}</h2>
                                 <h2>Recon Assists: {{totalRecAssistsQP}}</h2>
                                 <h2>Offensive Assists: {{totalOffAssistsQP}}</h2>
@@ -276,12 +276,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Best/Most in Game</span>
+                                    <span class="md-headline ">Best/Most in Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Eliminations: {{elimsBestQP}}</h2>
                                 <h2>Final Blows: {{finalBlowsBestQP}}</h2>
                                 <h2>Damage Done: {{damageDoneBestQP}} </h2>
@@ -300,12 +300,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Deaths</span>
+                                    <span class="md-headline ">Deaths</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Deaths: {{totalDeathsQP}}</h2>
                                 <h2>Environmental Deaths: {{totalEnvDeathsQP}}</h2>
                             </md-content-card>
@@ -313,12 +313,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Average</span>
+                                    <span class="md-headline ">Average</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Melee Final Blows: {{meleeAvgQP}}</h2>
                                 <h2>Time Spent On Fire: {{onFireAvgQP}} seconds</h2>
                                 <h2>Solo Kills: {{soloKillsAvgQP}}</h2>
@@ -334,12 +334,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Match Awards</span>
+                                    <span class="md-headline ">Match Awards</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Cards: {{totalCardsQP}}</h2>
                                 <h2>Medals: {{totalMedalsQP}}</h2>
                                 <h2>Gold Medals: {{totalGoldQP}}</h2>
@@ -350,12 +350,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Misceallaneous</span>
+                                    <span class="md-headline ">Misceallaneous</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Shield Generators Destroyed: {{shieldGensDestroyedQP}}</h2>
                                 <h2>Turrets Destroyed: {{turretsDestroyedQP}}</h2>
                                 <h2>Teleporters Destroyed: {{totalTeleDestroyedQP}}</h2>
@@ -370,12 +370,12 @@
                     </md-content>
                     <md-content flex>
                         <md-card flex>
-                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'}">
+                            <md-card-title md-colors="::{backgroundColor: 'default-primary-900'} ">
                                 <md-card-title-text>
-                                    <span class="md-headline">Game</span>
+                                    <span class="md-headline ">Game</span>
                                 </md-card-title-text>
                             </md-card-title>
-                            <md-content-card class="fix-me">
+                            <md-content-card class="fix-me ">
                                 <h2>Games Played: {{gamesQP}}</h2>
                                 <h2>Games Won: {{myCompWinsQP}}</h2>
                                 <h2>Games Tied: {{tiesQP}}</h2>
