@@ -43,7 +43,11 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     }
 
     $scope.compare = function() {
-        setTimeout(function() { $scope.getMyData(); }, 5000), $scope.getOppData();
+        $scope.getMyData();
+        setTimeout(function() {
+            $scope.getOppData();
+            console.log("second")
+        }, 6000);
     }
     var userID;
     var num = 0;
@@ -598,127 +602,135 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     $scope.getMyLOLData = function() {
         var myLOLRegion = $scope.myLOLRegion.toLowerCase();
         var myUserName = $scope.myLOLUserInput;
-        $http({
-            method: 'GET',
-            url: "https://" + myLOLRegion + "1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + myUserName + "?" + LOL_API_KEY,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(function successCallback(response) {
-                myDetails = response.data;
-                userID = myDetails.id;
-                $http({
-                    method: 'GET',
-                    url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v1.3/stats/by-summoner/" + userID + "/summary?season=SEASON2017&" + LOL_API_KEY,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(function successCallback(response) {
-                        var gameDetails = response.data;
-                        gameDetails.playerStatSummaries.forEach(function(res) {
-                            if (res.playerStatSummaryType == "RankedSolo5x5") {
-                                rankedMatch = res;
-                            }
-                            if (res.playerStatSummaryType == "Unranked") {
-                                unrankedMatch = res;
-                            }
-                        });
-                        $http({
-                            method: 'GET',
-                            url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v1.3/stats/by-summoner/" + userID + "/ranked?season=SEASON2017&" + LOL_API_KEY,
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }).then(function successCallback(response) {
-                                var statsDetails = response.data;
-                                statsDetails.champions.forEach(function(res) {
-                                    if (res.id == "0") {
-                                        leagueStats = res;
-                                    }
-                                });
-                                $http({
-                                    method: 'GET',
-                                    url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v2.5/league/by-summoner/" + userID + "/entry?" + LOL_API_KEY,
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    }
-                                }).then(function successCallback(response) {
-                                    profileDetails = response.data;
-                                    $http.post('/api/leagues', {
-                                        name: myDetails.name,
-                                        tier: profileDetails[userID]["0"].tier,
-                                        division: profileDetails[userID]["0"].entries["0"].division,
-                                        leaguePoints: profileDetails[userID]["0"].entries["0"].leaguePoints,
-                                        profileIconId: myDetails.profileIconId,
-                                        ranked5x5: {
-                                            wins: rankedMatch.wins,
-                                            losses: rankedMatch.losses,
-                                            aggregatedStats: {
-                                                totalKills: rankedMatch.aggregatedStats.totalChampionKills,
-                                                totalCS: rankedMatch.aggregatedStats.totalMinionKills,
-                                                totalTurretKills: rankedMatch.aggregatedStats.totalTurretsKilled,
-                                                totalNeutralMinionKills: rankedMatch.aggregatedStats.totalNeutralMinionsKilled,
-                                                totalAssists: rankedMatch.totalAssists
-                                            }
-                                        },
-                                        unranked5x5: {
-                                            wins: unrankedMatch.wins,
-                                            aggregatedStats: {
-                                                totalKills: unrankedMatch.aggregatedStats.totalChampionKills,
-                                                totalCS: unrankedMatch.aggregatedStats.totalMinionKills,
-                                                totalTurretKills: unrankedMatch.aggregatedStats.totalTurretsKilled,
-                                                totalNeutralMinionKills: unrankedMatch.aggregatedStats.totalNeutralMinionsKilled,
-                                                totalAssists: unrankedMatch.totalAssists
-                                            }
-                                        },
-                                        stats: {
-                                            loss: leagueStats.stats.totalSessionsLost,
-                                            wins: leagueStats.stats.totalSessionsWon,
-                                            kills: leagueStats.stats.totalChampionKills,
-                                            killingSpree: leagueStats.stats.killingSpree,
-                                            totalDamageDealt: leagueStats.stats.totalDamageDealt,
-                                            totalDamageTaken: leagueStats.stats.totalDamageTaken,
-                                            mostKillsPerGame: leagueStats.stats.mostChampionKillsPerSession,
-                                            totalCS: leagueStats.stats.totalMinionKills,
-                                            totalDoubleKills: leagueStats.stats.totalDoubleKills,
-                                            totalTripleKills: leagueStats.stats.totalTripleKills,
-                                            totalQuadraKills: leagueStats.stats.totalQuadraKills,
-                                            totalPentaKills: leagueStats.stats.totalPentaKills,
-                                            totalUnrealKills: leagueStats.stats.totalUnrealKills,
-                                            totalDeaths: leagueStats.stats.totalDeathsPerSession,
-                                            totalGoldEarned: leagueStats.stats.totalGoldEarned,
-                                            totalTurretsKilled: leagueStats.stats.totalTurretsKilled,
-                                            totalPhysicalDamageDealt: leagueStats.stats.totalPhysicalDamageDealt,
-                                            totalMagicDamageDealt: leagueStats.stats.totalMagicDamageDealt,
-                                            totalNeutralMinionsKilled: leagueStats.stats.totalNeutralMinionsKilled,
-                                            totalFirstBlood: leagueStats.stats.totalFirstBlood,
-                                            totalAssists: leagueStats.stats.totalAssists,
-                                            totalHeal: leagueStats.stats.totalHeal,
-                                            maxLargestKillingSpree: leagueStats.stats.maxLargestKillingSpree,
-                                            maxChampionsKilled: leagueStats.stats.maxChampionsKilled,
-                                            maxNumDeaths: leagueStats.stats.maxNumDeaths,
-                                            maxTimePlayed: leagueStats.stats.maxTimePlayed,
-                                            maxTimeSpentLiving: leagueStats.stats.maxTimeSpentLiving
-                                        }
-                                    });
-                                    $scope.getMyLOLDetails(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails);
-                                    $scope.hideLoader = false;
-                                    console.log("Added " + myUserName + " to MongoDB");
-                                });
 
-                            },
-                            function errorCallback(response) {
-                                console.log(response.error);
-                            });
+        $http.post('/api/leagues/getLOLDetails', {
+            region: myLOLRegion,
+            username: myUserName
+        }).success(function(res) {
+            console.log(res);
+        });
 
-                    },
-                    function errorCallback(response) {
-                        console.log(response.error);
-                    });
-            },
-            function errorCallback(response) {
-                console.log(response.error);
-            });
+        // $http({
+        //     method: 'GET',
+        //     url: "https://" + myLOLRegion + "1.api.riotgames.com/lol/summoner/v3/summoners/by-name/" + myUserName + "?" + LOL_API_KEY,
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then(function successCallback(response) {
+        //         myDetails = response.data;
+        //         userID = myDetails.id;
+        //         $http({
+        //             method: 'GET',
+        //             url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v1.3/stats/by-summoner/" + userID + "/summary?season=SEASON2017&" + LOL_API_KEY,
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         }).then(function successCallback(response) {
+        //                 var gameDetails = response.data;
+        //                 gameDetails.playerStatSummaries.forEach(function(res) {
+        //                     if (res.playerStatSummaryType == "RankedSolo5x5") {
+        //                         rankedMatch = res;
+        //                     }
+        //                     if (res.playerStatSummaryType == "Unranked") {
+        //                         unrankedMatch = res;
+        //                     }
+        //                 });
+        //                 $http({
+        //                     method: 'GET',
+        //                     url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v1.3/stats/by-summoner/" + userID + "/ranked?season=SEASON2017&" + LOL_API_KEY,
+        //                     headers: {
+        //                         'Content-Type': 'application/json'
+        //                     }
+        //                 }).then(function successCallback(response) {
+        //                         var statsDetails = response.data;
+        //                         statsDetails.champions.forEach(function(res) {
+        //                             if (res.id == "0") {
+        //                                 leagueStats = res;
+        //                             }
+        //                         });
+        //                         $http({
+        //                             method: 'GET',
+        //                             url: "https://" + myLOLRegion + ".api.riotgames.com/api/lol/" + myLOLRegion + "/v2.5/league/by-summoner/" + userID + "/entry?" + LOL_API_KEY,
+        //                             headers: {
+        //                                 'Content-Type': 'application/json'
+        //                             }
+        //                         }).then(function successCallback(response) {
+        //                             profileDetails = response.data;
+        //                             $http.post('/api/leagues', {
+        //                                 name: myDetails.name,
+        //                                 tier: profileDetails[userID]["0"].tier,
+        //                                 division: profileDetails[userID]["0"].entries["0"].division,
+        //                                 leaguePoints: profileDetails[userID]["0"].entries["0"].leaguePoints,
+        //                                 profileIconId: myDetails.profileIconId,
+        //                                 ranked5x5: {
+        //                                     wins: rankedMatch.wins,
+        //                                     losses: rankedMatch.losses,
+        //                                     aggregatedStats: {
+        //                                         totalKills: rankedMatch.aggregatedStats.totalChampionKills,
+        //                                         totalCS: rankedMatch.aggregatedStats.totalMinionKills,
+        //                                         totalTurretKills: rankedMatch.aggregatedStats.totalTurretsKilled,
+        //                                         totalNeutralMinionKills: rankedMatch.aggregatedStats.totalNeutralMinionsKilled,
+        //                                         totalAssists: rankedMatch.totalAssists
+        //                                     }
+        //                                 },
+        //                                 unranked5x5: {
+        //                                     wins: unrankedMatch.wins,
+        //                                     aggregatedStats: {
+        //                                         totalKills: unrankedMatch.aggregatedStats.totalChampionKills,
+        //                                         totalCS: unrankedMatch.aggregatedStats.totalMinionKills,
+        //                                         totalTurretKills: unrankedMatch.aggregatedStats.totalTurretsKilled,
+        //                                         totalNeutralMinionKills: unrankedMatch.aggregatedStats.totalNeutralMinionsKilled,
+        //                                         totalAssists: unrankedMatch.totalAssists
+        //                                     }
+        //                                 },
+        //                                 stats: {
+        //                                     loss: leagueStats.stats.totalSessionsLost,
+        //                                     wins: leagueStats.stats.totalSessionsWon,
+        //                                     kills: leagueStats.stats.totalChampionKills,
+        //                                     killingSpree: leagueStats.stats.killingSpree,
+        //                                     totalDamageDealt: leagueStats.stats.totalDamageDealt,
+        //                                     totalDamageTaken: leagueStats.stats.totalDamageTaken,
+        //                                     mostKillsPerGame: leagueStats.stats.mostChampionKillsPerSession,
+        //                                     totalCS: leagueStats.stats.totalMinionKills,
+        //                                     totalDoubleKills: leagueStats.stats.totalDoubleKills,
+        //                                     totalTripleKills: leagueStats.stats.totalTripleKills,
+        //                                     totalQuadraKills: leagueStats.stats.totalQuadraKills,
+        //                                     totalPentaKills: leagueStats.stats.totalPentaKills,
+        //                                     totalUnrealKills: leagueStats.stats.totalUnrealKills,
+        //                                     totalDeaths: leagueStats.stats.totalDeathsPerSession,
+        //                                     totalGoldEarned: leagueStats.stats.totalGoldEarned,
+        //                                     totalTurretsKilled: leagueStats.stats.totalTurretsKilled,
+        //                                     totalPhysicalDamageDealt: leagueStats.stats.totalPhysicalDamageDealt,
+        //                                     totalMagicDamageDealt: leagueStats.stats.totalMagicDamageDealt,
+        //                                     totalNeutralMinionsKilled: leagueStats.stats.totalNeutralMinionsKilled,
+        //                                     totalFirstBlood: leagueStats.stats.totalFirstBlood,
+        //                                     totalAssists: leagueStats.stats.totalAssists,
+        //                                     totalHeal: leagueStats.stats.totalHeal,
+        //                                     maxLargestKillingSpree: leagueStats.stats.maxLargestKillingSpree,
+        //                                     maxChampionsKilled: leagueStats.stats.maxChampionsKilled,
+        //                                     maxNumDeaths: leagueStats.stats.maxNumDeaths,
+        //                                     maxTimePlayed: leagueStats.stats.maxTimePlayed,
+        //                                     maxTimeSpentLiving: leagueStats.stats.maxTimeSpentLiving
+        //                                 }
+        //                             });
+        //                             // $scope.getMyLOLDetails(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails);
+        //                             $scope.hideLoader = false;
+        //                             console.log("Added " + myUserName + " to MongoDB");
+        //                         });
+
+        //                     },
+        //                     function errorCallback(response) {
+        //                         console.log(response.error);
+        //                     });
+
+        //             },
+        //             function errorCallback(response) {
+        //                 console.log(response.error);
+        //             });
+        //     },
+        //     function errorCallback(response) {
+        //         console.log(response.error);
+        //     });
     }
 
     $scope.getMyLOLDetails = function(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails) {
