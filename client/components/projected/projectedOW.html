@@ -1,0 +1,32 @@
+<div ng-controller="MainCtrl">
+    <md-content layout="row" layout-align="center start">
+        <md-button class="md-raised md-primary md-large" ng-click="getProjectedStats()" layout-align="center center">
+            <md-icon md-svg-icon="action:search"></md-icon>
+            Get Projected Stats
+        </md-button>
+    </md-content>
+    <md-content layout="row" layout-align="center center">
+        <md-card>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                <md-card-title-text>
+                    <span class="md-headline">Projected</span>
+                    <span class="md-subhead">Time needed to gain 10 levels</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card>
+                <h1>6 hours</h1>
+            </md-content-card>
+        </md-card>
+        <md-card>
+            <md-card-title md-colors="::{backgroundColor: 'compareTheme-primary-700'}">
+                <md-card-title-text>
+                    <span class="md-headline">Projected</span>
+                    <span class="md-subhead">Time need to gain 100SR</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-content-card>
+                <h1>4.22 hours</h1>
+            </md-content-card>
+        </md-card>
+    </md-content>
+</div>

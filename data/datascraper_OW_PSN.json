@@ -1,0 +1,13 @@
+{
+    "startUrl": "https://overwatchtracker.com/leaderboards/psn/global/CompetitiveRank?page=[1-10]&mode=1",
+    "selectors": [{
+        "parentSelectors": ["_root"],
+        "type": "SelectorText",
+        "multiple": true,
+        "id": "Username",
+        "selector": "td a:nth-of-type(2)",
+        "delay": "",
+        "regex": ""
+    }],
+    "_id": "overwatch_psn"
+}

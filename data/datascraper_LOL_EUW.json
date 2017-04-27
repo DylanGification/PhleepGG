@@ -1,0 +1,13 @@
+{
+    "startUrl": "http://www.lolking.net/leaderboards#/euw/[1-101]",
+    "selectors": [{
+        "parentSelectors": ["_root"],
+        "type": "SelectorText",
+        "multiple": true,
+        "id": "username",
+        "selector": "div.leaderboard-summoner-name",
+        "regex": "",
+        "delay": ""
+    }],
+    "_id": "leagueoflegends_euw"
+}
