@@ -91,40 +91,77 @@ exports.getLOLDetails = function(req, res) {
     var myUserName = req.body.username;
     var myUserID;
     LOL.getSummonersByName(myRegion, myUserName, function(err, data) {
-        console.log(data);
         myUserName = myUserName.toLowerCase();
-        myUserID = data[myUserName].id;
-        console.log(myUserID);
         myDetails = data;
-        makeLOLCalls(myUserID);
+        console.log(data);
+        myUserID = data[myUserName].id;
+        console.log(myUserID)
+        if (myUserID != null) {
+            makeLOLCalls(myUserID);
+        }
     });
+
+     makeLOLCalls = function(myUserID) {
+        LOL.getStatSummaryById(myRegion, userID, 'SEASON2017', function(err, matchData) {
+            var gameDetails = matchData;
+            gameDetails.playerStatSummaries.forEach(function(res) {
+                if (res.playerStatSummaryType == "RankedSolo5x5") {
+                    rankedMatch = res;
+                }
+                if (res.playerStatSummaryType == "Unranked") {
+                    unrankedMatch = res;
+                }
+            });
+        });
+
+        //Get Player Stats
+        LOL.getRankedStatsById(myRegion, userID, 'SEASON2017', function(err, statsData) {
+            var statsDetails = statsData;
+            statsDetails.champions.forEach(function(res) {
+                if (res.id == "0") {
+                    leagueStats = res;
+                }
+            });
+        });
+
+        //Get Profile Details
+        LOL.getLeaguesBySummonerId(myRegion, userID, function(err, profileData) {
+            profileDetails = profileData;
+        });
+    }
+    return res.status(200).json(myDetails, rankedMatch, unrankedMatch, leagueStats, profileDetails);
 }
 
-function makeLOLCalls(userID) {
+// function makeLOLCalls(userID) {
 
-    //Get Match Details
-    LOL.getStatSummaryById(myRegion, userID, 'SEASON2017', function(err, data) {
-        var gameDetails = data;
-        gameDetails.playerStatSummaries.forEach(function(res) {
-            if (res.playerStatSummaryType == "RankedSolo5x5") {
-                rankedMatch = res;
-            }
-            if (res.playerStatSummaryType == "Unranked") {
-                unrankedMatch = res;
-            }
-        });
-    });
+//     //Get Match Details
+//     LOL.getStatSummaryById(myRegion, userID, 'SEASON2017', function(err, data) {
+//         var gameDetails = data;
+//         gameDetails.playerStatSummaries.forEach(function(res) {
+//             if (res.playerStatSummaryType == "RankedSolo5x5") {
+//                 rankedMatch = res;
+//             }
+//             if (res.playerStatSummaryType == "Unranked") {
+//                 unrankedMatch = res;
+//             }
+//         });
+//     });
 
-    //Get Player Stats
-    LOL.getRankedStatsById(myRegion, userID, 'SEASON2017', function(err, data) {
-        var statsDetails = data;
-        statsDetails.champions.forEach(function(res) {
-            if (res.id == "0") {
-                leagueStats = res;
-            }
-        });
-    });
-}
+//     //Get Player Stats
+//     LOL.getRankedStatsById(myRegion, userID, 'SEASON2017', function(err, data) {
+//         var statsDetails = data;
+//         statsDetails.champions.forEach(function(res) {
+//             if (res.id == "0") {
+//                 leagueStats = res;
+//             }
+//         });
+//     });
+
+//     //Get Profile Details
+//     LOL.getLeaguesBySummonerId(myRegion, userID, function(err, data) {
+//         profileDetails = data;
+//     });
+// }
 
 // exports.getLOLDetails = function(req, lolRes) {
 //     console.log(req.body);

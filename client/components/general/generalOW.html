@@ -11,7 +11,7 @@
                     <form ng-submit="getMyData()">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Platform</label>
-                            <md-select ng-model="myPlatform">
+                            <md-select ng-model="myPlatform" ng-change="updateRegion(myPlatform)">
                                 <md-option ng-repeat="myPlatform in myPlatforms" value="{{myPlatform}}">{{myPlatform}}</md-option>
                             </md-select>
                         </md-input-container>

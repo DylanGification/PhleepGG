@@ -15,6 +15,16 @@ angular.module('phleepApp').controller('MainCtrl', function($scope, $http, socke
     $scope.myLOLRegions = ["EUW", "NA", "KR", "RU", "EUNE", "OCE", "TR", "JP", "BR", "LAS"];
     $scope.oppLOLRegions = ["EUW", "NA", "KR", "RU", "EUNE", "OCE", "TR", "JP", "BR", "LAS"];
 
+    if ($scope.myPlatform == 'XBL' || $scope.myPlatform == 'PSN') {
+        $scope.myRegion = "ANY";
+    }
+
+    $scope.updateRegion = function(platform) {
+        if (platform == 'XBL' || platform == 'PSN') {
+            $scope.myRegion = "ANY";
+        }
+    }
+
     //My details
     var myDetails = [];
     var myAchievements = [];
